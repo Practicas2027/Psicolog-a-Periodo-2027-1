@@ -1,0 +1,917 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Prácticas Psicología · Gestión integral</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+<style>
+:root{--bg:#EEF1F5;--surface:#fff;--surface2:#F6F8FB;--ink:#18233A;--muted:#5A6479;--line:#DCE1E9;--primary:#1E4E9C;--primary-h:#173F80;--on-primary:#fff;--primary-soft:#E5EDF9;--nav:#13213B;--nav-ink:#B9C5DB;--accent:#C8962E;--accent-soft:#F7EDD6;--ok:#2B7A57;--ok-soft:#E2F1E9;--warn:#9A5F0C;--warn-soft:#FAEFD9;--bad:#B0352D;--bad-soft:#FAE3E1;--info:#2F65A8;--info-soft:#E3ECF8;--neutral-soft:#ECEFF3;--shadow:0 1px 2px rgba(19,33,59,.06),0 6px 18px rgba(19,33,59,.05);--serif:'Source Serif 4',Georgia,'Times New Roman',serif;--sans:'Libre Franklin',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1420;--surface:#161F31;--surface2:#1B263B;--ink:#E5EAF2;--muted:#9AA6BB;--line:#2A3650;--primary:#76A0EA;--primary-h:#8FB2F0;--on-primary:#0E1420;--primary-soft:#1C2C4B;--nav:#0A101C;--nav-ink:#9FAECA;--accent:#E0B356;--accent-soft:#3A2E14;--ok:#62C193;--ok-soft:#15302A;--warn:#E3AB4E;--warn-soft:#36290F;--bad:#EF8078;--bad-soft:#3B1C1B;--info:#86AEEC;--info-soft:#1A2A45;--neutral-soft:#222D42;--shadow:0 1px 2px rgba(0,0,0,.3)}}
+:root[data-theme="dark"]{--bg:#0E1420;--surface:#161F31;--surface2:#1B263B;--ink:#E5EAF2;--muted:#9AA6BB;--line:#2A3650;--primary:#76A0EA;--primary-h:#8FB2F0;--on-primary:#0E1420;--primary-soft:#1C2C4B;--nav:#0A101C;--nav-ink:#9FAECA;--accent:#E0B356;--accent-soft:#3A2E14;--ok:#62C193;--ok-soft:#15302A;--warn:#E3AB4E;--warn-soft:#36290F;--bad:#EF8078;--bad-soft:#3B1C1B;--info:#86AEEC;--info-soft:#1A2A45;--neutral-soft:#222D42;--shadow:0 1px 2px rgba(0,0,0,.3)}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);min-height:100%;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;line-height:1.2;margin:0}
+p{margin:0 0 .6em}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.app{display:flex;min-height:100%}
+.side{width:258px;flex:none;background:var(--nav);color:var(--nav-ink);display:flex;flex-direction:column;position:sticky;top:0;height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));overflow-y:auto;z-index:40}
+.brand{display:flex;gap:12px;align-items:center;padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,.07)}
+.seal{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:var(--serif);font-size:22px;font-weight:600}
+.brand b{display:block;color:#fff;font-family:var(--serif);font-size:17px;font-weight:600}
+.brand span{font-size:12px;opacity:.8}
+.side nav{padding:10px 10px;display:flex;flex-direction:column;gap:2px;flex:1}
+.nav{display:flex;align-items:center;gap:11px;width:100%;padding:9px 12px;border:0;background:none;border-radius:8px;text-align:left;cursor:pointer;color:var(--nav-ink);font-size:14px}
+.nav:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav.on{background:rgba(255,255,255,.1);color:#fff;box-shadow:inset 3px 0 0 var(--accent)}
+.nav .badge{margin-left:auto;background:var(--accent);color:#13213B;border-radius:10px;font-size:11px;font-weight:700;padding:1px 7px}
+.side-foot{padding:10px;border-top:1px solid rgba(255,255,255,.07)}
+.who{padding:8px 12px 10px;font-size:12.5px;line-height:1.35}
+.who b{display:block;color:#fff;font-size:13.5px;font-weight:600}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.top{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:12px 28px;padding-top:calc(12px + env(safe-area-inset-top,0px));margin-top:calc(-1 * env(safe-area-inset-top,0px))}
+.top h1{font-size:21px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.icon-btn.menu-btn{display:none}
+.persel{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.persel select{padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-weight:600;color:var(--ink)}
+.content{padding:24px 28px 48px;max-width:1280px;width:100%}
+.scrim{display:none}
+@media (max-width:960px){
+ .side{position:fixed;left:0;top:0;bottom:0;height:auto;transform:translateX(-100%);transition:transform .22s ease;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+ .side.open{transform:none}
+ .scrim.open{display:block;position:fixed;inset:0;background:rgba(10,16,28,.45);z-index:35}
+ .icon-btn.menu-btn{display:inline-grid}
+ .top{padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top,0px))}
+ .top h1{font-size:18px}
+ .persel span{display:none}
+ .content{padding:16px 14px 40px}
+}
+.icon-btn{display:inline-grid;place-items:center;width:36px;height:36px;border:1px solid var(--line);background:var(--surface);border-radius:8px;cursor:pointer;position:relative}
+.icon-btn .dotn{position:absolute;top:5px;right:5px;width:8px;height:8px;border-radius:50%;background:var(--bad)}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-weight:600;font-size:14px;white-space:nowrap;text-decoration:none;color:var(--ink)}
+.btn:hover{border-color:var(--muted)}
+.btn.pri{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.btn.pri:hover{background:var(--primary-h)}
+.btn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn.danger{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 40%,var(--line))}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--primary)}
+.btn.ghost:hover{background:var(--primary-soft)}
+.btn.sm{padding:5px 10px;font-size:13px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.spacer{flex:1}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;box-shadow:var(--shadow)}
+.card h3{font-size:18px;margin-bottom:12px}
+.stack>*+*{margin-top:18px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap;background:var(--neutral-soft);color:var(--muted)}
+.chip.ok{background:var(--ok-soft);color:var(--ok)}
+.chip.warn{background:var(--warn-soft);color:var(--warn)}
+.chip.bad{background:var(--bad-soft);color:var(--bad)}
+.chip.info{background:var(--info-soft);color:var(--info)}
+.chip.acc{background:var(--accent-soft);color:var(--warn)}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.8}
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:15px 16px;display:flex;flex-direction:column;gap:2px;text-align:left;cursor:default}
+button.kpi{cursor:pointer}
+button.kpi:hover{border-color:var(--primary)}
+.kpi .v{font-family:var(--serif);font-size:30px;font-weight:600;line-height:1.1}
+.kpi .l{font-size:13px;color:var(--muted)}
+.kpi.ok .v{color:var(--ok)}.kpi.warn .v{color:var(--warn)}.kpi.bad .v{color:var(--bad)}.kpi.info .v{color:var(--primary)}
+.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-bottom:14px}
+.filters input,.filters select{padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);min-width:140px;max-width:100%}
+.filters .q{flex:1 1 240px}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{text-align:left;font-weight:600;font-size:12.5px;color:var(--muted);background:var(--surface2);padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td:first-child{min-width:190px}
+tr.click{cursor:pointer}
+tr.click:hover td{background:var(--surface2)}
+td .sub{display:block;font-size:12.5px;color:var(--muted)}
+.count{font-size:13px;color:var(--muted);margin:0 0 8px}
+.empty{padding:36px 20px;text-align:center;color:var(--muted)}
+.empty b{display:block;color:var(--ink);font-family:var(--serif);font-size:18px;margin-bottom:4px}
+.bar{height:7px;border-radius:5px;background:var(--neutral-soft);overflow:hidden;min-width:70px}
+.bar>i{display:block;height:100%;background:var(--primary);border-radius:5px}
+.bar.full>i{background:var(--bad)}
+.occ{display:flex;align-items:center;gap:8px;font-size:13px;white-space:nowrap}
+.occ .bar{flex:1}
+.fld{display:flex;flex-direction:column;gap:5px;font-size:13px}
+.fld>span{font-weight:600;color:var(--muted)}
+.fld input,.fld select,.fld textarea{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:14px;width:100%}
+.fld textarea{resize:vertical}
+.fld small{color:var(--muted)}
+.chk{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.form .full{grid-column:1/-1}
+.form h4{grid-column:1/-1;font-size:15px;margin-top:6px;padding-top:10px;border-top:1px solid var(--line)}
+#modal{position:fixed;inset:0;background:rgba(10,16,28,.5);display:none;align-items:flex-start;justify-content:center;z-index:60;overflow-y:auto;padding:max(24px,env(safe-area-inset-top,0px)) 14px max(24px,env(safe-area-inset-bottom,0px))}
+#modal.open{display:flex}
+.mbox{background:var(--surface);border-radius:14px;width:100%;max-width:560px;box-shadow:0 20px 50px rgba(0,0,0,.25);margin:auto 0}
+.mbox.wide{max-width:900px}
+.mhead{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--line)}
+.mhead h3{flex:1;font-size:19px}
+.mbody{padding:20px}
+.mfoot{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;padding:14px 20px;border-top:1px solid var(--line);background:var(--surface2);border-radius:0 0 14px 14px}
+#toasts{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:8px;z-index:80;max-width:calc(100% - 32px)}
+.toast{background:var(--ink);color:var(--bg);padding:11px 16px;border-radius:10px;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.2);animation:tin .2s ease}
+.toast.err{background:var(--bad);color:#fff}
+@keyframes tin{from{transform:translateY(8px);opacity:0}}
+.alert{display:flex;gap:12px;align-items:flex-start;padding:13px 16px;border-radius:10px;border:1px solid;font-size:14px}
+.alert svg{margin-top:2px}
+.alert.warn{background:var(--warn-soft);border-color:color-mix(in srgb,var(--warn) 30%,transparent);color:var(--warn)}
+.alert.info{background:var(--info-soft);border-color:color-mix(in srgb,var(--info) 30%,transparent);color:var(--info)}
+.alert.ok{background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 30%,transparent);color:var(--ok)}
+.alert.bad{background:var(--bad-soft);border-color:color-mix(in srgb,var(--bad) 30%,transparent);color:var(--bad)}
+.alert b{color:inherit}
+.alert .t{color:var(--ink)}
+/* Ruta de práctica */
+.ruta{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));counter-reset:r}
+.ruta li{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:0 4px}
+.ruta li::before{content:"";position:absolute;top:17px;left:-50%;width:100%;height:3px;background:var(--line);z-index:0}
+.ruta li:first-child::before{display:none}
+.ruta li.done::before,.ruta li.cur::before{background:var(--ok)}
+.ruta li.skip::before{background:repeating-linear-gradient(90deg,var(--line) 0 5px,transparent 5px 9px)}
+.ruta .dot{position:relative;z-index:1;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;background:var(--surface);border:2px solid var(--line);color:var(--muted)}
+.ruta .done .dot{background:var(--ok);border-color:var(--ok);color:#fff}
+.ruta .cur .dot{border-color:var(--accent);color:var(--ink);box-shadow:0 0 0 5px var(--accent-soft)}
+.ruta .skip .dot{border-style:dashed;color:var(--muted)}
+.ruta .lbl{font-size:12.5px;line-height:1.25;color:var(--muted)}
+.ruta .done .lbl{color:var(--ink)}
+.ruta .cur .lbl{color:var(--ink);font-weight:700}
+.ruta small{display:block;font-size:11px;color:var(--muted);font-weight:400}
+.ruta .dot svg{width:16px;height:16px;stroke-width:2.6}
+.ruta.compact .dot{width:28px;height:28px;font-size:12px}
+.ruta.compact li::before{top:13px}
+.ruta.compact .lbl{font-size:11.5px}
+@media (max-width:760px){
+ .ruta{grid-template-columns:1fr;gap:0}
+ .ruta li{flex-direction:row;text-align:left;padding:0 0 14px 0}
+ .ruta li::before{left:16px;top:-50%;width:3px;height:100%}
+ .ruta.compact li::before{left:12px}
+ .ruta li:first-child::before{display:none}
+}
+/* Escenarios cards */
+.escs{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.esc{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:10px;border-top:4px solid var(--ac,var(--primary));position:relative}
+.esc h3{font-size:18px}
+.esc .meta{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:3px}
+.esc .req{font-size:13px;background:var(--surface2);border-radius:8px;padding:9px 11px}
+.esc .foot{margin-top:auto;display:flex;align-items:center;gap:10px;padding-top:6px}
+.stamp{position:absolute;top:14px;right:14px;border:2px solid var(--bad);color:var(--bad);font-weight:800;font-size:11.5px;letter-spacing:.06em;padding:3px 8px;border-radius:6px;transform:rotate(4deg);background:var(--surface)}
+.dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px 20px;margin:0}
+.dl div{min-width:0}
+.dl dt{font-size:12px;color:var(--muted);font-weight:600}
+.dl dd{margin:2px 0 0;font-size:14px;overflow-wrap:anywhere}
+.hero{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;justify-content:space-between;margin-bottom:6px}
+.hero h2{font-size:30px}
+.now{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;border-left:5px solid var(--accent)}
+@media (max-width:640px){.now{grid-template-columns:1fr}}
+.now .k{font-size:13px;color:var(--muted);font-weight:600}
+.now h3{font-size:22px;margin:2px 0 6px}
+.tl{list-style:none;margin:0;padding:0 0 0 20px;border-left:2px solid var(--line)}
+.tl li{position:relative;padding:0 0 18px 14px}
+.tl li::before{content:"";position:absolute;left:-27px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:3px solid var(--primary)}
+.tl .d{font-size:13px;font-weight:700;color:var(--primary)}
+.tl .ty{font-weight:600}
+.tl .tx{font-size:14px;margin-top:3px;white-space:pre-wrap}
+.tl .mt{font-size:12px;color:var(--muted);margin-top:4px}
+.cal{list-style:none;margin:0;padding:0}
+.cal li{display:grid;grid-template-columns:130px 1fr;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);align-items:center}
+.cal li:last-child{border-bottom:0}
+.cal .f{font-family:var(--serif);font-weight:600;font-size:16px}
+.cal li.past{opacity:.55}
+.cal li.next .f{color:var(--accent)}
+.hbars{display:flex;flex-direction:column;gap:10px}
+.hb{display:grid;grid-template-columns:minmax(110px,190px) 1fr 44px;gap:10px;align-items:center;font-size:13.5px}
+.hb .bar{height:12px}
+.hb .lab{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hb .n{text-align:right;font-weight:700}
+.stack-bar{display:flex;height:12px;border-radius:6px;overflow:hidden;background:var(--neutral-soft)}
+.stack-bar i{display:block;height:100%}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.notif{display:flex;gap:12px;padding:13px 16px;border-bottom:1px solid var(--line)}
+.notif:last-child{border-bottom:0}
+.notif.new{background:var(--primary-soft)}
+.notif .d{font-size:12px;color:var(--muted)}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:16px;overflow-x:auto}
+.tab{padding:9px 14px;border:0;background:none;cursor:pointer;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap}
+.tab.on{color:var(--primary);border-color:var(--primary)}
+.split{display:grid;grid-template-columns:300px 1fr;gap:18px;align-items:start}
+@media (max-width:900px){.split{grid-template-columns:1fr}}
+.plist{display:flex;flex-direction:column;gap:6px;max-height:70vh;overflow-y:auto}
+.pitem{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 12px;cursor:pointer}
+.pitem.on{border-color:var(--primary);box-shadow:inset 3px 0 0 var(--primary)}
+.pitem b{display:block;font-size:14px}
+.pitem span{font-size:12.5px;color:var(--muted)}
+/* Login */
+.login{min-height:100%;display:grid;grid-template-columns:1.1fr 1fr}
+.login .l{background:var(--nav);color:var(--nav-ink);padding:56px 52px;display:flex;flex-direction:column;justify-content:space-between;gap:30px}
+.login .l h1{color:#fff;font-size:40px;line-height:1.1;margin:22px 0 14px}
+.login .l p{max-width:46ch;font-size:15.5px}
+.flow{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:6px 4px;font-size:12.5px}
+.flow li{display:flex;align-items:center;gap:4px}
+.flow li+li::before{content:"";width:14px;height:1px;background:var(--accent);margin-right:4px}
+.login .r{display:flex;align-items:center;justify-content:center;padding:40px 22px}
+.lbox{width:100%;max-width:420px}
+.lbox h2{font-size:26px;margin-bottom:6px}
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}
+.role{border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:14px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:6px}
+.role b{font-size:14.5px}
+.role span{font-size:12px;color:var(--muted)}
+.role.on{border-color:var(--primary);background:var(--primary-soft)}
+.demo{margin-top:18px;font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:12px}
+@media (max-width:860px){.login{grid-template-columns:1fr}.login .l{padding:32px 24px}.login .l h1{font-size:30px}}
+.letter{white-space:pre-wrap;font-family:var(--serif);font-size:15px;line-height:1.6;background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:22px;max-height:420px;overflow:auto}
+.code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;background:var(--surface2);padding:1px 5px;border-radius:4px}
+.bulk{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--primary-soft);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:14px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{.side,.top,#toasts{display:none!important}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<div id="modal" onclick="if(event.target===this)cerrarModal()"></div>
+<div id="toasts" aria-live="polite"></div>
+<script>
+'use strict';
+const KEY='practicasPsico.v1', SKEY='practicasPsico.sesion';
+let S=null, sess=null, view='', F={}, curTabla=null, _ok=null;
+const AREAS_DEF=['Clínica','Organizacional','Educativa','Social/comunitaria'];
+const MAT={pendiente:'Pendiente',matriculado:'Matriculado financieramente',no_matriculado:'No matriculado',validacion:'Validación pendiente'};
+const MAT_T={pendiente:'warn',matriculado:'ok',no_matriculado:'bad',validacion:'info'};
+const EST_SOL={pendiente_validacion:'Pendiente de validación',pendiente_entrevista:'Pendiente de entrevista',asignacion_provisional:'Asignación provisional',confirmada:'Escenario confirmado',no_aprobada:'Selección no aprobada',anulada:'Anulada / liberada'};
+const EST_T={pendiente_validacion:'info',pendiente_entrevista:'warn',asignacion_provisional:'warn',confirmada:'ok',no_aprobada:'bad',anulada:'neutral'};
+const ACTIVOS=['pendiente_validacion','pendiente_entrevista','asignacion_provisional','confirmada'];
+const OCUPA=['pendiente_validacion','asignacion_provisional','confirmada'];
+const ASIG=['asignacion_provisional','confirmada'];
+const TIPOS_SEG=['Reunión inicial','Seguimiento','Observación','Visita al escenario','Compromiso','Evaluación','Cierre'];
+const EST_PROC=['En curso','En curso con alertas','Suspendido','Finalizado'];
+const NOTIF_TIPOS={seleccion:'Selección de escenario registrada',entrevista:'Entrevista requerida / pendiente',aprobado:'Resultado de la selección o entrevista',matricula:'Matrícula financiera pendiente',confirmado:'Escenario de práctica confirmado',carta:'Carta Aval disponible',cierre:'Cierre próximo del período de selección'};
+const PLANTILLA=`{{ciudad}}, {{fecha}}
+
+Señores
+{{empresa}}
+Atn. {{contacto}}
+{{ciudad_empresa}}
+
+Asunto: Carta aval para práctica profesional
+
+Reciban un cordial saludo.
+
+La {{institucion}}, a través de la Coordinación de Prácticas Institucionales, presenta y avala a {{estudiante}}, identificado(a) con {{tipo_documento}} No. {{documento}} y código estudiantil {{codigo}}, estudiante del programa de {{programa}}, para realizar su práctica profesional en el área {{area}}, desempeñando el rol de {{cargo}}, durante el período académico {{periodo}}.
+
+El (la) estudiante cumple con los requisitos académicos y financieros establecidos por la institución para el desarrollo de su práctica y contará con el acompañamiento de un docente supervisor del programa.
+
+Agradecemos la oportunidad que brindan a nuestro(a) estudiante para fortalecer su formación profesional.
+
+Cordialmente,`;
+
+/* ---------- utilidades ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=p=>(p||'x')+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const ahora=()=>new Date().toISOString();
+function hoyISO(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function fD(s){if(!s)return '—';const m=String(s).match(/^(\d{4})-(\d{2})-(\d{2})/);if(!m)return String(s);return `${m[3]}/${m[2]}/${m[1]}`}
+function fDH(s){if(!s)return '—';const d=new Date(s);if(isNaN(d))return fD(s);return d.toLocaleDateString('es-CO',{day:'2-digit',month:'2-digit',year:'numeric'})+' '+d.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})}
+function fDL(s){if(!s)return '';const d=new Date(s);if(isNaN(d))return fD(s);return d.toLocaleDateString('es-CO',{day:'2-digit',month:'2-digit',year:'numeric'})}
+const norm=s=>String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim().toLowerCase();
+function titulo(s){const men=['de','del','la','las','los','y','e'];return String(s??'').replace(/\u00a0/g,' ').trim().toLowerCase().replace(/\s+/g,' ').split(' ').map((w,i)=>i&&men.includes(w)?w:w.charAt(0).toUpperCase()+w.slice(1)).join(' ')}
+const nombreCompleto=e=>e?(e.nombres+' '+e.apellidos).trim():'—';
+const E=id=>S.estudiantes.find(x=>x.id===id);
+const ESC=id=>S.escenarios.find(x=>x.id===id);
+const D=id=>S.docentes.find(x=>x.id===id);
+const SOL=id=>S.solicitudes.find(x=>x.id===id);
+const P=id=>S.periodos.find(x=>x.id===id);
+function per(){return P(S.periodoActual)||S.periodos[0]}
+const perDe=est=>P(est.periodoId);
+const estP=()=>S.estudiantes.filter(e=>e.periodoId===per().id);
+const escP=tipo=>S.escenarios.filter(e=>e.periodoId===per().id&&(!tipo||e.tipo===tipo));
+const solP=()=>S.solicitudes.filter(s=>s.periodoId===per().id);
+function nombreEsc(e){return e?(e.tipo==='vacante'&&e.cargo?e.nombre+' · '+e.cargo:e.nombre):'—'}
+function docenteDe(s){return s?D(s.docenteId||(ESC(s.escenarioId)||{}).docenteId):null}
+const desc=s=>`${nombreCompleto(E(s.estudianteId))} · ${nombreEsc(ESC(s.escenarioId))}`;
+const AREA_COL={'Clínica':'#2F65A8','Organizacional':'#C8962E','Educativa':'#2B7A57','Social/comunitaria':'#8A4FA0'};
+const areaCol=a=>AREA_COL[a]||'#5A6479';
+
+const ICONS={grid:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18.5 14.8c1.7.8 2.7 2.5 3 5.2"/>',building:'<path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16M16 9h2a2 2 0 0 1 2 2v10M2 21h20M8 7h4M8 11h4M8 15h4"/>',brief:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>',chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.4A8 8 0 1 1 21 12z"/>',check:'<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',card:'<rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M2.5 10h19M6 15h4"/>',teach:'<rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 21l4-5 4 5"/>',eye:'<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',doc:'<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/>',chart:'<path d="M3 3v18h18"/><path d="M7 16v-4M12 16V8M17 16v-7"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>',route:'<circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M8.5 19H15a3.5 3.5 0 0 0 0-7H9a3.5 3.5 0 0 1 0-7h6.5"/>',list:'<path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/>',bell:'<path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/>',home:'<path d="m3 11 9-8 9 8M5 9.5V21h14V9.5"/>',plus:'<path d="M12 5v14M5 12h14"/>',x:'<path d="M6 6l12 12M18 6 6 18"/>',up:'<path d="M12 16V4M7 9l5-5 5 5M4 20h16"/>',down:'<path d="M12 4v12M7 11l5 5 5-5M4 20h16"/>',menu:'<path d="M3 6h18M3 12h18M3 18h18"/>',logout:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>',alert:'<path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>',tick:'<path d="m5 12 5 5 9-10"/>',info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/>',pin:'<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.2-6 8-6s7 2 8 6"/>',edit:'<path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/>',lock:'<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'};
+const ic=n=>`<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]||''}</svg>`;
+
+/* ---------- persistencia ---------- */
+function guardar(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast('No se pudo guardar en este navegador. Descarga un respaldo desde Configuración.','err')}}
+function cargar(){
+ try{const r=localStorage.getItem(KEY);if(r){S=JSON.parse(r);migrar();return}}catch(e){}
+ S=seed();guardar();
+}
+function migrar(){
+ S.config=Object.assign(seedConfig(),S.config||{});
+ S.config.notif=Object.assign(seedConfig().notif,S.config.notif||{});
+ ['periodos','escenarios','estudiantes','docentes','solicitudes','seguimientos','cartas','notifs','audit'].forEach(k=>{if(!Array.isArray(S[k]))S[k]=[]});
+}
+function seedConfig(){return{areas:[...AREAS_DEF],cartaAreas:['Organizacional'],diasAviso:7,notif:{seleccion:true,entrevista:true,aprobado:true,matricula:true,confirmado:true,carta:true,cierre:true},claveAdmin:'admin',claveProg:'programa',institucion:'Corporación Universitaria Reformada',programa:'Psicología',ciudad:'Barranquilla',responsable:'Yolima Gómez',cargoResponsable:'Coordinadora General de Prácticas Institucionales',plantilla:PLANTILLA}}
+
+/* ---------- toasts, modales, formularios ---------- */
+function toast(msg,tipo){const t=document.createElement('div');t.className='toast '+(tipo||'');t.textContent=msg;$('#toasts').appendChild(t);setTimeout(()=>t.remove(),4600)}
+function modal(title,body,o={}){
+ $('#modal').innerHTML=`<div class="mbox ${o.wide?'wide':''}" role="dialog" aria-modal="true" aria-label="${esc(title)}"><div class="mhead"><h3>${esc(title)}</h3><button class="icon-btn" onclick="cerrarModal()" aria-label="Cerrar">${ic('x')}</button></div><div class="mbody">${body}</div>${o.foot?`<div class="mfoot">${o.foot}</div>`:''}</div>`;
+ $('#modal').classList.add('open');$('#modal').scrollTop=0;
+}
+function cerrarModal(){$('#modal').classList.remove('open');$('#modal').innerHTML=''}
+function confirmar(tit,html,fn,btn,danger){_ok=fn;modal(tit,html,{foot:`<button class="btn ghost" onclick="cerrarModal()">Cancelar</button><button class="btn ${danger?'danger':'pri'}" onclick="const f=_ok;cerrarModal();f&&f()">${esc(btn||'Confirmar')}</button>`})}
+function fld(label,name,val,type,o){
+ type=type||'text';o=o||{};const id='f_'+name;let inp;
+ if(type==='select')inp=`<select id="${id}">${o.options.map(op=>{const [v,t]=Array.isArray(op)?op:[op,op];return `<option value="${esc(v)}" ${String(v)===String(val??'')?'selected':''}>${esc(t)}</option>`}).join('')}</select>`;
+ else if(type==='textarea')inp=`<textarea id="${id}" rows="${o.rows||3}">${esc(val)}</textarea>`;
+ else if(type==='check')return `<label class="chk ${o.cls||''}"><input type="checkbox" id="${id}" ${val?'checked':''}> ${esc(label)}</label>`;
+ else inp=`<input id="${id}" type="${type}" value="${esc(val)}" ${o.min!=null?`min="${o.min}"`:''} ${o.ph?`placeholder="${esc(o.ph)}"`:''}>`;
+ return `<label class="fld ${o.cls||''}" for="${id}"><span>${esc(label)}${o.req?' *':''}</span>${inp}${o.help?`<small>${esc(o.help)}</small>`:''}</label>`;
+}
+function leer(names){const o={};names.forEach(n=>{const el=document.getElementById('f_'+n);if(!el)return;o[n]=el.type==='checkbox'?el.checked:el.value.trim()});return o}
+const chip=(t,tone)=>`<span class="chip ${tone||''}">${esc(t)}</span>`;
+const chipMat=m=>chip(MAT[m]||'Pendiente',MAT_T[m]||'warn');
+function textoSol(s){if(!s)return 'Sin escenario';if(s.estado==='asignacion_provisional'){const e=E(s.estudianteId);if(e&&e.matricula!=='matriculado')return 'Aprobada · pendiente de matrícula financiera'}return EST_SOL[s.estado]}
+const chipSol=s=>s?chip(textoSol(s),EST_T[s.estado]):chip('Sin escenario','');
+function chipEsc(e){const st=estadoEsc(e);const lab=st==='Completo'?(e.tipo==='vacante'?'Vacantes asignadas':'Cupo completo'):st;return chip(lab,{Disponible:'ok','En proceso':'info',Completo:'bad',Cerrado:''}[st])}
+function barra(v,max){const p=max?Math.min(100,Math.round(v/max*100)):0;return `<div class="bar ${v>=max&&max?'full':''}"><i style="width:${p}%"></i></div>`}
+function opts(arr,todos){return (todos?[['',todos]]:[]).concat(arr)}
+
+/* ---------- auditoría y notificaciones ---------- */
+function quien(){if(!sess)return 'Sistema';if(sess.rol==='admin')return 'Administrador';if(sess.rol==='prog')return 'Programa de Psicología';if(sess.rol==='est'){const e=E(sess.id);return 'Estudiante: '+nombreCompleto(e)}const d=D(sess.id);return 'Docente: '+(d?d.nombre:'')}
+function log(accion,detalle){S.audit.unshift({id:uid('a'),fecha:ahora(),usuario:quien(),accion,detalle});if(S.audit.length>5000)S.audit.length=5000}
+function notificar(tipo,para,texto){if(tipo&&S.config.notif[tipo]===false)return;S.notifs.unshift({id:uid('n'),para,texto,fecha:ahora(),leida:false});if(S.notifs.length>8000)S.notifs.length=8000}
+function hist(s,t){(s.historial=s.historial||[]).push({fecha:ahora(),texto:t,usuario:quien()})}
+
+/* ---------- reglas de negocio ---------- */
+function ocupados(escId){return S.solicitudes.filter(s=>s.escenarioId===escId&&OCUPA.includes(s.estado)).length}
+function libres(e){return Math.max(0,(+e.cupos||0)-ocupados(e.id))}
+function estadoEsc(e){if(e.cerrado)return 'Cerrado';if(libres(e)<=0)return 'Completo';if(ocupados(e.id)>0||S.solicitudes.some(s=>s.escenarioId===e.id&&s.estado==='pendiente_entrevista'))return 'En proceso';return 'Disponible'}
+function solActiva(estId){return S.solicitudes.find(s=>s.estudianteId===estId&&ACTIVOS.includes(s.estado))}
+function selAbierta(p){if(!p)return false;if(p.seleccion==='abierta')return true;if(p.seleccion==='cerrada')return false;const h=hoyISO();return(!p.aperturaSel||h>=p.aperturaSel)&&(!p.cierreSel||h<=p.cierreSel)}
+function vencida(e){return e.tipo==='vacante'&&e.fechaLimite&&hoyISO()>e.fechaLimite}
+function esCarta(s){const e=s&&ESC(s.escenarioId);return !!(e&&S.config.cartaAreas.includes(e.area))}
+
+function crearSolicitud(est,esc,origen){
+ if(esc.periodoId!==est.periodoId)throw new Error('El escenario no pertenece al período académico del estudiante.');
+ if(solActiva(est.id))throw new Error(`${nombreCompleto(est)} ya tiene una selección activa en este período. Debe liberarse antes de registrar otra.`);
+ if(esc.cerrado)throw new Error('Este escenario está cerrado.');
+ if(libres(esc)<=0)throw new Error(`CUPO COMPLETO: ${esc.nombre} no tiene cupos disponibles.`);
+ const s={id:uid('s'),periodoId:est.periodoId,estudianteId:est.id,escenarioId:esc.id,fecha:ahora(),estado:esc.requiereEntrevista?'pendiente_entrevista':'pendiente_validacion',entrevista:esc.requiereEntrevista?{estado:'Pendiente',fecha:'',observaciones:''}:null,docenteId:'',historial:[]};
+ hist(s,origen);S.solicitudes.push(s);return s;
+}
+function postAprob(s){const est=E(s.estudianteId);notificar('aprobado','est:'+est.id,`Tu escenario fue aprobado: ${nombreEsc(ESC(s.escenarioId))}.`);if(est.matricula!=='matriculado')notificar('matricula','est:'+est.id,'Tu matrícula financiera está pendiente. Es requisito para que tu escenario quede confirmado.')}
+/* Regla 4: confirmación automática solo con matrícula financiera vigente */
+function sincronizar(){
+ S.solicitudes.forEach(s=>{
+  const est=E(s.estudianteId);if(!est)return;
+  if(s.estado==='asignacion_provisional'&&est.matricula==='matriculado'){
+   s.estado='confirmada';s.fechaConfirmacion=ahora();hist(s,'Escenario de práctica confirmado automáticamente (selección aprobada + matrícula financiera vigente)');
+   notificar('confirmado','est:'+est.id,`Tu escenario de práctica ha sido confirmado: ${nombreEsc(ESC(s.escenarioId))}.`);
+   if(esCarta(s))notificar('carta','est:'+est.id,'Tu Carta Aval está disponible.');
+   S.audit.unshift({id:uid('a'),fecha:ahora(),usuario:'Sistema',accion:'Confirmación automática',detalle:desc(s)});
+  }else if(s.estado==='confirmada'&&est.matricula!=='matriculado'){
+   s.estado='asignacion_provisional';s.fechaConfirmacion=null;hist(s,'Confirmación revertida: la matrícula financiera dejó de estar vigente');
+   S.audit.unshift({id:uid('a'),fecha:ahora(),usuario:'Sistema',accion:'Confirmación revertida',detalle:desc(s)});
+  }
+ });
+}
+function act(fn){try{const r=fn();sincronizar();guardar();render();return r}catch(e){toast(e.message||String(e),'err');console.error(e)}}
+
+/* ---------- etapas del proceso ---------- */
+function etapas(est){
+ const p=perDe(est);const sols=S.solicitudes.filter(s=>s.estudianteId===est.id);const s=solActiva(est.id);const esc=s?ESC(s.escenarioId):null;
+ const reqE=esc&&esc.requiereEntrevista;const val=s&&ASIG.includes(s.estado);const conf=s&&s.estado==='confirmada';
+ const org=s&&esCarta(s);
+ return [
+  {k:'Consulta de escenarios',done:sols.length>0||!!s},
+  {k:'Selección / postulación',done:!!s},
+  {k:'Entrevista',done:!!(s&&reqE&&s.estado!=='pendiente_entrevista'),skip:!!(s&&!reqE),opt:true},
+  {k:'Validación',done:!!val},
+  {k:'Matrícula financiera',done:est.matricula==='matriculado'},
+  {k:'Asignación confirmada',done:!!conf},
+  {k:'Carta Aval',done:!!(s&&S.cartas.some(c=>c.solicitudId===s.id)),skip:!!(s&&!org),opt:true},
+  {k:'Inicio de práctica',done:!!(conf&&p&&p.inicioPractica&&hoyISO()>=p.inicioPractica)},
+  {k:'Supervisión y seguimiento',done:!!(s&&S.seguimientos.some(g=>g.solicitudId===s.id))}
+ ];
+}
+function etapaActual(est){const st=etapas(est);const i=st.findIndex(x=>!x.done&&!x.skip);return i<0?'Proceso al día':st[i].k}
+function ruta(est,compact){
+ const st=etapas(est);const cur=st.findIndex(x=>!x.done&&!x.skip);
+ return `<ol class="ruta ${compact?'compact':''}" aria-label="Ruta de práctica">${st.map((x,i)=>{const c=x.skip?'skip':x.done?'done':i===cur?'cur':'todo';return `<li class="${c}"${i===cur?' aria-current="step"':''}><span class="dot">${x.done?ic('tick'):x.skip?'–':i+1}</span><span class="lbl">${x.k}${x.skip?'<small>No aplica</small>':x.opt&&!x.done&&i!==cur?'<small>Si aplica</small>':''}</span></li>`}).join('')}</ol>`;
+}
+function pendientesDe(est){const s=solActiva(est.id);const r=[];if(!s)r.push('Sin escenario asignado');else{if(s.estado==='pendiente_entrevista')r.push('Entrevista pendiente');if(s.estado==='pendiente_validacion')r.push('Selección pendiente de validación')}if(est.matricula!=='matriculado')r.push('Matrícula financiera: '+MAT[est.matricula]);return r}
+/* ---------- datos de demostración (ficticios) ---------- */
+function seed(){
+ let r=11;const rnd=()=>{r=(r*16807)%2147483647;return r/2147483647};const pick=a=>a[Math.floor(rnd()*a.length)];
+ const st={version:1,config:seedConfig(),periodoActual:'p2027-1',periodos:[],escenarios:[],estudiantes:[],docentes:[],solicitudes:[],seguimientos:[],cartas:[],notifs:[],audit:[]};
+ st.periodos=[
+  {id:'p2026-2',codigo:'2026-2',inicio:'2026-07-27',fin:'2026-12-04',aperturaSel:'2026-05-04',cierreSel:'2026-05-29',entrevistasIni:'2026-06-01',entrevistasFin:'2026-06-12',confirmacion:'2026-07-10',matriculaIni:'2026-06-15',matriculaFin:'2026-07-17',inicioPractica:'2026-08-03',seleccion:'auto'},
+  {id:'p2027-1',codigo:'2027-1',inicio:'2027-01-25',fin:'2027-06-11',aperturaSel:'2026-09-28',cierreSel:'2026-10-30',entrevistasIni:'2026-11-03',entrevistasFin:'2026-11-13',confirmacion:'2026-12-11',matriculaIni:'2026-11-17',matriculaFin:'2027-01-22',inicioPractica:'2027-02-01',seleccion:'auto'}];
+ st.docentes=[
+  {id:'d1',nombre:'Andrea Molina Pacheco',documento:'32800111',email:'andrea.molina@correo.ejemplo.co',telefono:'3001112233',areas:'Clínica'},
+  {id:'d2',nombre:'Carlos Ariza Rojas',documento:'72150222',email:'carlos.ariza@correo.ejemplo.co',telefono:'3002223344',areas:'Organizacional'},
+  {id:'d3',nombre:'Diana Fontalvo Ruiz',documento:'22450333',email:'diana.fontalvo@correo.ejemplo.co',telefono:'3003334455',areas:'Educativa'},
+  {id:'d4',nombre:'Jorge Barrios Mejía',documento:'8730444',email:'jorge.barrios@correo.ejemplo.co',telefono:'3004445566',areas:'Social/comunitaria'}];
+ const base={direccion:'',contacto:'',telefono:'',email:'',cerrado:false,requiereEntrevista:false,modalidadEntrevista:'',fechasEntrevista:'',observaciones:'',requisitos:'',docenteId:'',cargo:'',modalidad:'Presencial',descripcion:'',perfil:'',fechaLimite:'',procesoSeleccion:'',jornada:'Diurna'};
+ const mk=(key,pid,o)=>{const e=Object.assign({},base,o,{id:key,periodoId:pid,tipo:o.tipo||'escenario'});st.escenarios.push(e);return e};
+ const P1='p2027-1',P0='p2026-2';
+ mk('ips',P1,{nombre:'IPS Bienestar Integral',area:'Clínica',ciudad:'Barranquilla',direccion:'Calle 70 # 46-21',contacto:'Ps. Liliana Rueda',telefono:'6053581122',email:'talento@ipsbienestar.ejemplo.co',cupos:4,requisitos:'Haber aprobado Psicopatología II. Disponibilidad en jornada diurna.',docenteId:'d1'});
+ mk('renacer',P1,{nombre:'Centro de Salud Mental Renacer',area:'Clínica',ciudad:'Barranquilla',direccion:'Carrera 43 # 82-15',contacto:'Dra. Mónica Vides',telefono:'6053704455',cupos:2,requiereEntrevista:true,modalidadEntrevista:'Presencial',fechasEntrevista:'3 al 13 de noviembre de 2026',requisitos:'Hoja de vida actualizada y carta de motivación.',docenteId:'d1'});
+ mk('bienestar',P1,{nombre:'Asesoría Psicológica · Bienestar Universitario',area:'Clínica',ciudad:'Barranquilla',contacto:'Oficina de Bienestar',cupos:2,requiereEntrevista:true,modalidadEntrevista:'Presencial',fechasEntrevista:'Según convocatoria de Bienestar',jornada:'Nocturna',observaciones:'Cupos en jornada nocturna. El proceso de selección lo realiza la Oficina de Bienestar.',docenteId:'d1'});
+ mk('clinorte',P1,{nombre:'Clínica del Norte · Unidad de Salud Mental',area:'Clínica',ciudad:'Soledad',direccion:'Calle 30 # 19-40',contacto:'Ps. Ricardo Escorcia',cupos:3,requiereEntrevista:true,modalidadEntrevista:'Virtual',fechasEntrevista:'5 al 12 de noviembre de 2026',requisitos:'Esquema de vacunación completo.',docenteId:'d1'});
+ mk('horizonte',P1,{nombre:'Colegio Nuevo Horizonte',area:'Educativa',ciudad:'Barranquilla',direccion:'Carrera 38 # 74-60',contacto:'Lic. Patricia Navarro',cupos:3,requisitos:'Disponibilidad de lunes a viernes en la mañana.',docenteId:'d3'});
+ mk('lapaz',P1,{nombre:'I.E.D. La Paz',area:'Educativa',ciudad:'Soledad',contacto:'Coordinación de orientación escolar',cupos:4,docenteId:'d3'});
+ mk('bilingue',P1,{nombre:'Colegio Bilingüe del Caribe',area:'Educativa',ciudad:'Puerto Colombia',contacto:'Departamento de Psicología',cupos:2,requiereEntrevista:true,modalidadEntrevista:'Presencial',requisitos:'Nivel de inglés B1.',docenteId:'d3'});
+ mk('semillas',P1,{nombre:'Fundación Semillas de Esperanza',area:'Social/comunitaria',ciudad:'Barranquilla',contacto:'Trabajadora social Diana Orozco',cupos:3,requisitos:'Disponibilidad para trabajo de campo en barrios.',docenteId:'d4'});
+ mk('comisaria',P1,{nombre:'Comisaría de Familia Zona Norte',area:'Social/comunitaria',ciudad:'Barranquilla',cupos:2,docenteId:'d4'});
+ mk('tejiendo',P1,{nombre:'Corporación Tejiendo Comunidad',area:'Social/comunitaria',ciudad:'Malambo',cupos:2,docenteId:'d4'});
+ mk('logistica',P1,{tipo:'vacante',nombre:'Logística Portuaria del Norte S.A.S.',cargo:'Practicante de Gestión Humana',area:'Organizacional',ciudad:'Barranquilla',modalidad:'Presencial',cupos:2,requiereEntrevista:true,modalidadEntrevista:'Presencial',fechaLimite:'2026-10-23',descripcion:'Apoyo a procesos de selección, inducción y clima laboral.',perfil:'Estudiante proactivo, con buena comunicación escrita y manejo de Excel.',requisitos:'Disponibilidad tiempo completo.',procesoSeleccion:'Revisión de hoja de vida, prueba psicotécnica y entrevista con Gestión Humana.',contacto:'Jefe de Talento Humano',docenteId:'d2'});
+ mk('comercial',P1,{tipo:'vacante',nombre:'Grupo Comercial Atlántico',cargo:'Practicante de Selección y Reclutamiento',area:'Organizacional',ciudad:'Barranquilla',modalidad:'Híbrida',cupos:1,requiereEntrevista:true,modalidadEntrevista:'Virtual',fechaLimite:'2026-10-28',descripcion:'Publicación de vacantes, filtros telefónicos y aplicación de pruebas.',perfil:'Interés en psicometría y reclutamiento.',procesoSeleccion:'Entrevista virtual y caso práctico.',docenteId:'d2'});
+ mk('avanzar',P1,{tipo:'vacante',nombre:'Cooperativa Avanzar',cargo:'Practicante de Bienestar Laboral',area:'Organizacional',ciudad:'Soledad',modalidad:'Presencial',cupos:2,fechaLimite:'2026-10-30',descripcion:'Diseño y ejecución del plan de bienestar y SST psicosocial.',perfil:'Habilidades para facilitar talleres grupales.',procesoSeleccion:'Asignación directa por la coordinación.',docenteId:'d2'});
+ mk('tecno',P1,{tipo:'vacante',nombre:'Tecnoservicios del Caribe',cargo:'Practicante de Desarrollo Organizacional',area:'Organizacional',ciudad:'Barranquilla',modalidad:'Híbrida',cupos:2,requiereEntrevista:true,modalidadEntrevista:'Virtual',fechaLimite:'2026-10-26',descripcion:'Apoyo en evaluación de desempeño y planes de formación.',perfil:'Manejo de herramientas ofimáticas y análisis de datos básicos.',docenteId:'d2'});
+ // Período anterior (histórico)
+ mk('ips26',P0,{nombre:'IPS Bienestar Integral',area:'Clínica',ciudad:'Barranquilla',cupos:3,docenteId:'d1'});
+ mk('horizonte26',P0,{nombre:'Colegio Nuevo Horizonte',area:'Educativa',ciudad:'Barranquilla',cupos:3,docenteId:'d3'});
+ mk('semillas26',P0,{nombre:'Fundación Semillas de Esperanza',area:'Social/comunitaria',ciudad:'Barranquilla',cupos:2,docenteId:'d4'});
+ mk('avanzar26',P0,{tipo:'vacante',nombre:'Cooperativa Avanzar',cargo:'Practicante de Bienestar Laboral',area:'Organizacional',ciudad:'Soledad',cupos:2,docenteId:'d2'});
+ const nombres=['Valeria','Sebastián','Daniela','Andrés','Mariana','Juan David','Camila','Luis Fernando','Isabella','Kevin','Paola','Santiago','Laura Sofía','Jesús David','Natalia','Miguel Ángel','Yuliana','Esteban','Karina','Óscar','Melissa','Brayan','Ana María','Duván','Sharon','Alejandro','Gabriela','Rafael','Tatiana','Jhon Jairo','Lina','Mauricio','Vanessa','Hernán'];
+ const apes=['Rodríguez','Pérez','Márquez','Orozco','Charris','Polo','Ospino','Barraza','Mercado','De la Hoz','Ariza','Escorcia','Navarro','Pacheco','Fontalvo','Torres','Vides','Montes','Cantillo','Rueda','Bolaño','Salcedo'];
+ let n=0;
+ const mkEst=(pid,area1)=>{const nom=nombres[n%nombres.length];n++;const a1=pick(apes),a2=pick(apes);const e={id:'e'+n,periodoId:pid,tipoDoc:'Cédula',documento:String(1001000000+Math.floor(rnd()*142000000)),codigo:'20'+(20+Math.floor(rnd()*4))+String(10000+Math.floor(rnd()*89999)),nombres:nom,apellidos:a1+' '+a2,email:norm(nom.split(' ')[0])+'.'+norm(a1).replace(/ /g,'')+n+'@correo.ejemplo.co',telefono:'30'+String(10000000+Math.floor(rnd()*89999999)),ciudad:pick(['Barranquilla','Barranquilla','Soledad','Malambo','Puerto Colombia','Galapa']),semestre:pick(['8','9','10']),jornada:rnd()<.65?'Diurna':'Nocturna',trabaja:rnd()<.35?'Sí':'No',area1:area1||pick(AREAS_DEF),area2:pick(AREAS_DEF),areaPrevia:'',matricula:'pendiente',cambioHabilitado:false};st.estudiantes.push(e);return e};
+ const sol=(est,escId,estado,extra)=>{const esc=st.escenarios.find(x=>x.id===escId);const s=Object.assign({id:'s'+est.id,periodoId:est.periodoId,estudianteId:est.id,escenarioId:escId,fecha:est.periodoId===P1?'2026-09-29T15:'+String(10+Math.floor(rnd()*49))+':00':'2026-05-06T10:00:00',estado,entrevista:esc.requiereEntrevista?{estado:estado==='pendiente_entrevista'?'Pendiente':estado==='no_aprobada'?'No aprobado':'Aprobado',fecha:estado==='pendiente_entrevista'?'2026-11-05T09:30':'2026-09-30T10:00',observaciones:estado==='no_aprobada'?'El perfil no se ajustó a la disponibilidad horaria requerida.':''}:null,docenteId:'',historial:[{fecha:'2026-09-29T15:00:00',texto:'Selección realizada por el estudiante',usuario:'Estudiante'}]},extra||{});if(estado==='confirmada')s.fechaConfirmacion=est.periodoId===P1?'2026-09-30T16:00:00':'2026-07-10T09:00:00';st.solicitudes.push(s);st.notifs.push({id:uid('n'),para:'est:'+est.id,texto:`Tu selección de escenario fue registrada: ${esc.nombre}.`,fecha:s.fecha,leida:true});if(estado==='confirmada')st.notifs.unshift({id:uid('n'),para:'est:'+est.id,texto:`Tu escenario de práctica ha sido confirmado: ${esc.nombre}.`,fecha:s.fechaConfirmacion,leida:false});return s};
+ const plan=[['ips','confirmada','matriculado'],['ips','confirmada','matriculado'],['ips','asignacion_provisional','pendiente'],['renacer','pendiente_entrevista','matriculado'],['renacer','pendiente_entrevista','pendiente'],['renacer','no_aprobada','pendiente'],['bienestar','confirmada','matriculado'],['bienestar','confirmada','matriculado'],['horizonte','pendiente_validacion','pendiente'],['horizonte','pendiente_validacion','validacion'],['horizonte','confirmada','matriculado'],['lapaz','asignacion_provisional','validacion'],['semillas','confirmada','matriculado'],['logistica','confirmada','matriculado'],['logistica','pendiente_entrevista','pendiente'],['avanzar','asignacion_provisional','no_matriculado'],['clinorte','pendiente_entrevista','matriculado'],['comisaria','pendiente_validacion','pendiente']];
+ plan.forEach(([k,estado,mat])=>{const esc=st.escenarios.find(x=>x.id===k);const e=mkEst(P1,esc.area);e.matricula=mat;sol(e,k,estado)});
+ for(let i=0;i<8;i++){const e=mkEst(P1);e.matricula=rnd()<.4?'matriculado':'pendiente'}
+ const prev=[['ips26'],['ips26'],['ips26'],['horizonte26'],['horizonte26'],['semillas26'],['avanzar26'],['avanzar26']];
+ const segTxt=[['2026-08-04','Reunión inicial','Presentación en el escenario, revisión del plan de trabajo y acuerdos de horario.','Inducción institucional','Entregar plan de práctica firmado','En curso'],['2026-08-25','Seguimiento','Buen nivel de adaptación. Participa en tamizajes y registro de historias.','Tamizajes, registro de información','Preparar estudio de caso','En curso'],['2026-09-15','Observación','El escenario reporta puntualidad y compromiso. Se sugiere fortalecer la redacción de informes.','Elaboración de informes','Ajustar formato de informe','En curso'],['2026-09-29','Seguimiento','Avance del 60 % del plan de práctica.','Talleres grupales','Presentar avance de proyecto','En curso']];
+ prev.forEach(([k],i)=>{const esc=st.escenarios.find(x=>x.id===k);const e=mkEst(P0,esc.area);e.matricula='matriculado';const s=sol(e,k,'confirmada');const doc=esc.docenteId;segTxt.slice(0,2+(i%3)).forEach((g,j)=>st.seguimientos.push({id:'g'+i+'_'+j,solicitudId:s.id,estudianteId:e.id,docenteId:doc,autor:'Docente',fecha:g[0],tipo:g[1],descripcion:g[2],actividades:g[3],compromisos:g[4],estadoProceso:g[5],creado:g[0]+'T18:00:00'}));
+  if(esc.area==='Organizacional')st.cartas.push({id:'c'+i,codigo:'CA-2026-2-'+String(st.cartas.length+1).padStart(4,'0'),solicitudId:s.id,estudianteId:e.id,fecha:'2026-07-14T10:00:00',generadoPor:'Administrador',datos:null});});
+ st.audit.push({id:uid('a'),fecha:ahora(),usuario:'Sistema',accion:'Carga de datos de demostración',detalle:'Datos ficticios para explorar la plataforma'});
+ return st;
+}
+/* ---------- archivos: descarga, PDF, Excel, importación ---------- */
+let _dlP=null;
+function getDl(){if(!_dlP){_dlP=(window.claude&&typeof window.claude.use==='function')?Promise.resolve(window.claude.use('downloads')).catch(()=>null):Promise.resolve(null)}return _dlP}
+async function saveFile(name,blob){
+ const ns=await getDl();
+ if(ns){try{await ns.save({filename:name,data:blob});toast('Archivo listo: '+name);return}catch(e){const c=e&&e.code;if(c==='declined')return;if(c==='rate_limited'){toast('Hay una descarga en curso. Intenta de nuevo en un momento.','err');return}if(!['unavailable','not_granted','capability_disabled','capability_removed'].includes(c)){toast('No se pudo descargar: '+((e&&e.message)||c),'err');return}}}
+ const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);toast('Archivo descargado: '+name);
+}
+const pt=s=>String(s??'').replace(/[—–]/g,'-').replace(/[“”]/g,'"').replace(/[‘’]/g,"'").replace(/→/g,'->').replace(/·/g,'-').replace(/Ψ/g,'');
+function nuevoPDF(orient){if(!window.jspdf)throw new Error('No se pudo cargar el generador de PDF. Revisa tu conexión a internet.');const {jsPDF}=window.jspdf;return new jsPDF({orientation:orient||'landscape',unit:'mm',format:'letter'})}
+function encPDF(doc,tit,sub,y0){const w=doc.internal.pageSize.getWidth();doc.setFillColor(30,78,156);doc.rect(0,0,w,4,'F');doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(90,100,121);doc.text(pt(S.config.institucion+' - Prácticas Profesionales de '+S.config.programa),14,(y0||0)+12);doc.setFontSize(15);doc.setTextColor(24,35,58);doc.text(pt(tit),14,(y0||0)+20);doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(90,100,121);const ls=doc.splitTextToSize(pt(sub),w-28);doc.text(ls,14,(y0||0)+26);return (y0||0)+26+ls.length*4.5}
+function piePDF(doc){const n=doc.getNumberOfPages();for(let i=1;i<=n;i++){doc.setPage(i);const w=doc.internal.pageSize.getWidth(),h=doc.internal.pageSize.getHeight();doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(120);doc.text(pt('Generado el '+new Date().toLocaleString('es-CO')+' por '+quien()+'. Información validada en la plataforma.'),14,h-8);doc.text(`Página ${i} de ${n}`,w-14,h-8,{align:'right'})}}
+function tablaPDF(doc,head,body,y,o){doc.autoTable(Object.assign({head:[head.map(pt)],body:body.length?body.map(r=>r.map(c=>pt(c))):[[{content:'Sin registros',colSpan:head.length,styles:{halign:'center',textColor:[120,120,120]}}]],startY:y,styles:{fontSize:8,cellPadding:1.8,textColor:[24,35,58],lineColor:[220,225,233],lineWidth:.1},headStyles:{fillColor:[30,78,156],textColor:255,fontStyle:'bold'},alternateRowStyles:{fillColor:[246,248,251]},margin:{left:14,right:14,bottom:16}},o||{}));return doc.lastAutoTable.finalY}
+async function guardarPDF(doc,nombre){piePDF(doc);await saveFile(nombre,doc.output('blob'))}
+async function xlsxLibro(hojas,nombre){if(!window.XLSX)throw new Error('No se pudo cargar el generador de Excel. Revisa tu conexión a internet.');const wb=XLSX.utils.book_new();const used=new Set();hojas.forEach(h=>{let nm=String(h.nombre||'Hoja').replace(/[\\\/\?\*\[\]:]/g,' ').slice(0,28).trim()||'Hoja';let k=nm,i=2;while(used.has(k.toLowerCase()))k=nm.slice(0,25)+' '+(i++);used.add(k.toLowerCase());const ws=XLSX.utils.aoa_to_sheet(h.filas);ws['!cols']=(h.filas[0]||[]).map((_,c)=>({wch:Math.min(48,Math.max(10,...h.filas.map(rw=>String(rw[c]??'').length+2)))}));XLSX.utils.book_append_sheet(wb,ws,k)});const out=XLSX.write(wb,{bookType:'xlsx',type:'array'});await saveFile(nombre,new Blob([out]))}
+const run=fn=>Promise.resolve().then(fn).catch(e=>{toast(e.message||String(e),'err');console.error(e)});
+function elegirArchivo(accept,cb){const i=document.createElement('input');i.type='file';i.accept=accept;i.style.display='none';document.body.appendChild(i);i.onchange=()=>{const f=i.files[0];i.remove();if(f)run(()=>cb(f))};i.click()}
+async function leerExcel(f){if(!window.XLSX)throw new Error('No se pudo cargar el lector de Excel.');const buf=await f.arrayBuffer();const wb=XLSX.read(buf,{type:'array'});const ws=wb.Sheets[wb.SheetNames[0]];return XLSX.utils.sheet_to_json(ws,{header:1,defval:'',raw:true}).filter(r=>r.some(c=>String(c).trim()!==''))}
+function buscadorCols(header){const h=header.map(norm);return (...c)=>{for(const x of c){const i=h.indexOf(norm(x));if(i>=0)return i}for(const x of c){const i=h.findIndex(v=>v.startsWith(norm(x)));if(i>=0)return i}return -1}}
+function mapArea(v){const n=norm(v);if(!n)return '';const k=n.split(/[\/ ]/)[0];return S.config.areas.find(a=>norm(a).startsWith(k))||titulo(v)}
+const cel=(r,i)=>i>=0?String(r[i]??'').replace(/\u00a0/g,' ').trim():'';
+
+function importarEstudiantes(){
+ elegirArchivo('.xlsx,.xls,.csv',async f=>{
+  const rows=await leerExcel(f);if(rows.length<2)throw new Error('El archivo no tiene filas de datos.');
+  const head=rows[0];const find=buscadorCols(head);const h=head.map(norm);
+  const ix={doc:find('identificacion','documento','numero de documento','cedula'),tipo:find('tipo de identificacion','tipo de documento'),mail:find('correo electronico','correo','email'),pa:find('primer apellido'),sa:find('segundo apellido'),nom:find('nombres'),full:find('nombre','nombre completo'),ape:find('apellidos'),cod:find('codigo estudiantil','codigo'),tel:find('telefono','celular'),ciu:find('municipio o ciudad','ciudad','municipio'),sem:find('semestre a cursar','semestre'),jor:find('jornada de estudios','jornada'),tra:find('trabaja'),prev:find('¿cual area de practica realizaste','cual area de practica realizaste','area previa'),mat:find('matricula financiera')};
+  const op1=h.map((v,i)=>(v.startsWith('area de practica. opcion 1')||v==='area opcion 1'||v==='area 1')?i:-1).filter(i=>i>=0);
+  const op2=h.map((v,i)=>(v.startsWith('area de practica. opcion 2')||v==='area opcion 2'||v==='area 2')?i:-1).filter(i=>i>=0);
+  if(ix.doc<0)throw new Error('No encontré la columna de documento ("Identificación" o "Documento").');
+  let nuevos=0,act=0,omit=0;const pid=per().id;
+  rows.slice(1).forEach(r=>{
+   const doc=cel(r,ix.doc).replace(/[^\dA-Za-z]/g,'');if(!doc){omit++;return}
+   let nombres=cel(r,ix.nom),apellidos=[cel(r,ix.pa),cel(r,ix.sa)].filter(Boolean).join(' ')||cel(r,ix.ape);
+   if(!nombres&&ix.full>=0){const p=cel(r,ix.full).split(/\s+/);nombres=p.slice(0,Math.max(1,p.length-2)).join(' ');apellidos=apellidos||p.slice(Math.max(1,p.length-2)).join(' ')}
+   const a1=op1.map(i=>cel(r,i)).find(Boolean)||'',a2=op2.map(i=>cel(r,i)).find(Boolean)||'';
+   const datos={tipoDoc:cel(r,ix.tipo)||'Cédula',documento:doc,nombres:titulo(nombres),apellidos:titulo(apellidos),email:cel(r,ix.mail).toLowerCase(),telefono:cel(r,ix.tel),ciudad:titulo(cel(r,ix.ciu)),semestre:cel(r,ix.sem),jornada:titulo(cel(r,ix.jor)),trabaja:/^s/i.test(cel(r,ix.tra))?'Sí':cel(r,ix.tra)?'No':'',area1:mapArea(a1),area2:mapArea(a2),areaPrevia:cel(r,ix.prev)};
+   const cod=cel(r,ix.cod);if(cod)datos.codigo=cod;
+   const ex=S.estudiantes.find(e=>e.periodoId===pid&&e.documento===doc);
+   if(ex){Object.keys(datos).forEach(k=>{if(datos[k])ex[k]=datos[k]});act++}
+   else{S.estudiantes.push(Object.assign({id:uid('e'),periodoId:pid,codigo:'',matricula:'pendiente',cambioHabilitado:false},datos));nuevos++}
+  });
+  log('Importación de estudiantes',`${f.name}: ${nuevos} nuevos, ${act} actualizados, ${omit} sin documento (período ${per().codigo})`);
+  guardar();render();toast(`Importación lista: ${nuevos} nuevos, ${act} actualizados${omit?', '+omit+' filas sin documento':''}.`);
+ });
+}
+function importarEscenarios(){
+ elegirArchivo('.xlsx,.xls,.csv',async f=>{
+  const rows=await leerExcel(f);if(rows.length<2)throw new Error('El archivo no tiene filas de datos.');
+  const find=buscadorCols(rows[0]);
+  const ix={tipo:find('tipo'),nom:find('nombre','institucion','empresa'),area:find('area'),ciu:find('ciudad'),dir:find('direccion'),con:find('contacto','persona de contacto'),tel:find('telefono'),mail:find('correo','email'),cup:find('cupos','vacantes'),ent:find('requiere entrevista','entrevista'),mod:find('modalidad entrevista'),req:find('requisitos'),obs:find('observaciones'),car:find('cargo'),des:find('descripcion'),per:find('perfil'),lim:find('fecha limite'),proc:find('proceso de seleccion'),modal:find('modalidad'),jor:find('jornada')};
+  if(ix.nom<0||ix.cup<0)throw new Error('El archivo debe tener al menos las columnas "Nombre" y "Cupos". Descarga la plantilla para ver el formato.');
+  let n=0;
+  rows.slice(1).forEach(r=>{const nombre=cel(r,ix.nom);if(!nombre)return;const tipo=norm(cel(r,ix.tipo)).startsWith('vac')?'vacante':'escenario';let lim=r[ix.lim];if(lim instanceof Date)lim=lim.toISOString().slice(0,10);else if(typeof lim==='number'&&window.XLSX){const d=XLSX.SSF.parse_date_code(lim);lim=d?`${d.y}-${String(d.m).padStart(2,'0')}-${String(d.d).padStart(2,'0')}`:''}else lim=cel(r,ix.lim);
+   S.escenarios.push({id:uid('esc'),periodoId:per().id,tipo,nombre,area:mapArea(cel(r,ix.area))||(tipo==='vacante'?'Organizacional':''),ciudad:titulo(cel(r,ix.ciu)),direccion:cel(r,ix.dir),contacto:cel(r,ix.con),telefono:cel(r,ix.tel),email:cel(r,ix.mail),cupos:Math.max(0,parseInt(cel(r,ix.cup))||0),cerrado:false,requiereEntrevista:/^s/i.test(norm(cel(r,ix.ent))),modalidadEntrevista:cel(r,ix.mod),fechasEntrevista:'',observaciones:cel(r,ix.obs),requisitos:cel(r,ix.req),docenteId:'',cargo:cel(r,ix.car),modalidad:cel(r,ix.modal)||'Presencial',descripcion:cel(r,ix.des),perfil:cel(r,ix.per),fechaLimite:lim||'',procesoSeleccion:cel(r,ix.proc),jornada:cel(r,ix.jor)||'Diurna'});n++});
+  log('Importación de escenarios',`${f.name}: ${n} registros (período ${per().codigo})`);guardar();render();toast(`${n} escenarios/vacantes importados.`);
+ });
+}
+function plantillaEscenarios(){run(()=>xlsxLibro([{nombre:'Escenarios',filas:[['Tipo','Nombre','Área','Ciudad','Dirección','Contacto','Teléfono','Correo','Cupos','Requiere entrevista','Modalidad entrevista','Jornada','Requisitos','Observaciones','Cargo','Modalidad','Descripción','Perfil','Fecha límite','Proceso de selección'],['Escenario','IPS Ejemplo','Clínica','Barranquilla','Calle 1 # 2-3','Nombre del contacto','3000000000','contacto@ejemplo.co',3,'No','','Diurna','Requisitos del escenario','','','Presencial','','','',''],['Vacante','Empresa Ejemplo S.A.S.','Organizacional','Barranquilla','','','','',1,'Sí','Virtual','Diurna','','','Practicante de Gestión Humana','Híbrida','Descripción del rol','Perfil solicitado','2027-01-15','Entrevista y prueba']]}],'plantilla-escenarios.xlsx'))}
+function importarMatricula(){
+ elegirArchivo('.xlsx,.xls,.csv',async f=>{
+  const rows=await leerExcel(f);const find=buscadorCols(rows[0]);const id=find('documento','identificacion','cedula'),ie=find('estado','matricula financiera','matricula');
+  if(id<0||ie<0)throw new Error('El archivo debe tener las columnas "Documento" y "Estado".');
+  let n=0,nf=0;
+  rows.slice(1).forEach(r=>{const doc=cel(r,id).replace(/[^\dA-Za-z]/g,'');const est=estP().find(e=>e.documento===doc);if(!est){if(doc)nf++;return}const v=norm(cel(r,ie));let m='pendiente';if(v.includes('no matric')||v==='no')m='no_matriculado';else if(v.includes('valid'))m='validacion';else if(v.includes('matric')||v==='si'||v.includes('pag'))m='matriculado';if(est.matricula!==m){est.matricula=m;est.matriculaFecha=ahora();if(m!=='matriculado'&&solActiva(est.id))notificar('matricula','est:'+est.id,'Tu matrícula financiera está pendiente.');n++}});
+  log('Importación de matrícula financiera',`${f.name}: ${n} estados actualizados, ${nf} documentos no encontrados`);
+  sincronizar();guardar();render();toast(`${n} estados actualizados${nf?' · '+nf+' documentos no están en este período':''}.`);
+ });
+}
+
+/* ---------- sesión y estructura ---------- */
+const NAV={
+ admin:[['dashboard','Dashboard','grid'],['periodos','Períodos académicos','cal'],['estudiantes','Estudiantes','users'],['escenarios','Escenarios','building'],['vacantes','Vacantes','brief'],['entrevistas','Entrevistas','chat'],['asignaciones','Asignaciones','check'],['matricula','Matrícula financiera','card'],['docentes','Docentes','teach'],['supervision','Supervisión','eye'],['cartas','Cartas Aval','doc'],['reportes','Reportes','chart'],['config','Configuración','gear']],
+ est:[['inicio','Mi proceso de práctica','route'],['escenarios','Escenarios disponibles','building'],['postulaciones','Mis postulaciones','list'],['asignacion','Mi asignación','check'],['matricula','Matrícula financiera','card'],['vacantes','Vacantes organizacionales','brief'],['carta','Carta Aval','doc'],['calendario','Calendario','cal'],['notifs','Notificaciones','bell']],
+ doc:[['inicio','Inicio','home'],['misest','Mis estudiantes','users'],['supervision','Supervisión','eye'],['seguimientos','Seguimientos','list'],['calendario','Calendario','cal'],['reportes','Reportes','chart']],
+ prog:[['programa','Estudiantes para matrícula académica','check'],['calendario','Calendario','cal']]
+};
+function go(k){view=k;toggleNav(false);render();window.scrollTo(0,0)}
+function toggleNav(o){const s=$('#side'),c=$('.scrim');if(!s)return;s.classList.toggle('open',o);c&&c.classList.toggle('open',o)}
+function misNotifs(){return sess&&sess.rol==='est'?S.notifs.filter(n=>n.para==='est:'+sess.id):[]}
+function sinLeer(){return misNotifs().filter(n=>!n.leida).length}
+function rolInfo(){if(sess.rol==='admin')return ['Administrador','Coordinación de Prácticas'];if(sess.rol==='prog')return ['Programa de Psicología','Consulta de matrícula académica'];if(sess.rol==='est'){const e=E(sess.id);return [nombreCompleto(e),'Estudiante · '+(perDe(e)||{}).codigo]}const d=D(sess.id);return [d?d.nombre:'','Docente supervisor']}
+function render(){
+ const root=$('#root');
+ if(sess&&((sess.rol==='est'&&!E(sess.id))||(sess.rol==='doc'&&!D(sess.id))))sess=null;
+ if(!sess){root.innerHTML=vLogin();return}
+ const nav=NAV[sess.rol];if(!nav.find(n=>n[0]===view))view=nav[0][0];
+ const V=VIEWS[sess.rol][view];curTabla=null;
+ const [nm,sub]=rolInfo();const nl=sinLeer();
+ const titulo=(nav.find(n=>n[0]===view)||[])[1];
+ const conPer=sess.rol!=='est';
+ root.innerHTML=`<div class="app"><aside class="side" id="side"><div class="brand"><div class="seal" aria-hidden="true">Ψ</div><div><b>Prácticas</b><span>Programa de ${esc(S.config.programa)}</span></div></div><nav>${nav.map(([k,t,i])=>`<button class="nav ${k===view?'on':''}" onclick="go('${k}')" ${k===view?'aria-current="page"':''}>${ic(i)}<span>${t}</span>${k==='notifs'&&nl?`<span class="badge">${nl}</span>`:''}</button>`).join('')}</nav><div class="side-foot"><div class="who"><b>${esc(nm)}</b>${esc(sub)}</div><button class="nav" onclick="salir()">${ic('logout')}<span>Cerrar sesión</span></button></div></aside><div class="scrim" onclick="toggleNav(false)"></div>
+ <div class="main"><header class="top"><button class="icon-btn menu-btn" onclick="toggleNav(true)" aria-label="Abrir menú">${ic('menu')}</button><h1>${esc(titulo)}</h1>${conPer?`<label class="persel"><span>Período</span><select onchange="S.periodoActual=this.value;guardar();render()" aria-label="Período académico">${S.periodos.slice().sort((a,b)=>b.codigo.localeCompare(a.codigo)).map(p=>`<option value="${p.id}" ${p.id===S.periodoActual?'selected':''}>${esc(p.codigo)}</option>`).join('')}</select></label>`:''}${sess.rol==='est'?`<button class="icon-btn" onclick="go('notifs')" aria-label="Notificaciones">${ic('bell')}${nl?'<span class="dotn"></span>':''}</button>`:''}</header>
+ <main class="content" id="content">${V()}</main></div></div>`;
+ if(curTabla)curTabla();
+}
+function salir(){sess=null;try{localStorage.removeItem(SKEY)}catch(e){}view='';render()}
+let loginRol='admin';
+function vLogin(){
+ const demoEst=S.estudiantes.filter(e=>e.periodoId===S.periodoActual).slice(0,30);
+ const r=loginRol;
+ return `<div class="login"><section class="l"><div><div class="seal" aria-hidden="true">Ψ</div><h1>Prácticas profesionales de ${esc(S.config.programa)}</h1><p>Escenarios, cupos, entrevistas, matrícula, asignaciones y supervisión en un solo lugar. Cada persona ve solo lo que le corresponde.</p></div><ol class="flow"><li>Consulta</li><li>Selección</li><li>Entrevista</li><li>Validación</li><li>Matrícula financiera</li><li>Confirmación</li><li>Carta Aval</li><li>Supervisión</li></ol><p class="small" style="opacity:.75">${esc(S.config.institucion)}</p></section>
+ <section class="r"><div class="lbox"><h2>Ingresar</h2><p class="muted">Elige tu perfil.</p>
+ <div class="roles" role="radiogroup">${[['admin','Coordinación','Administración del proceso'],['est','Estudiante','Mi proceso de práctica'],['doc','Docente','Supervisión de estudiantes'],['prog','Programa','Matrícula académica']].map(([k,t,s])=>`<button class="role ${r===k?'on':''}" role="radio" aria-checked="${r===k}" onclick="loginRol='${k}';render()"><b>${t}</b><span>${s}</span></button>`).join('')}</div>
+ <div class="stack">${r==='admin'||r==='prog'?fld('Clave de acceso','clave','','password'):fld('Número de documento','docu','','text',{ph:'Sin puntos ni espacios'})}
+ <button class="btn pri" style="width:100%;justify-content:center" onclick="entrar()">Ingresar</button></div>
+ <div class="demo">${r==='admin'?'Demostración: clave <span class="code">'+esc(S.config.claveAdmin)+'</span>':r==='prog'?'Demostración: clave <span class="code">'+esc(S.config.claveProg)+'</span>':r==='doc'?`Demostración: ${S.docentes.slice(0,4).map(d=>`<button class="btn ghost sm" onclick="document.getElementById('f_docu').value='${esc(d.documento)}'">${esc(d.nombre.split(' ')[0])} · ${esc(d.areas||'')}</button>`).join(' ')}`:demoEst.length?`<label class="fld"><span>Demostración: elegir un estudiante del período ${esc(per().codigo)}</span><select onchange="document.getElementById('f_docu').value=this.value"><option value="">—</option>${demoEst.map(e=>`<option value="${esc(e.documento)}">${esc(nombreCompleto(e))} · ${esc(textoSol(solActiva(e.id)))}</option>`).join('')}</select></label>`:''}</div>
+ </div></section></div>`;
+}
+function entrar(){
+ const r=loginRol;
+ if(r==='admin'||r==='prog'){const c=(document.getElementById('f_clave')||{}).value||'';if(c!==(r==='admin'?S.config.claveAdmin:S.config.claveProg)){toast('La clave no es correcta.','err');return}sess={rol:r}}
+ else{const d=((document.getElementById('f_docu')||{}).value||'').replace(/\D/g,'');if(!d){toast('Escribe tu número de documento.','err');return}
+  if(r==='est'){const list=S.estudiantes.filter(e=>e.documento===d);if(!list.length){toast('No hay un estudiante inscrito con ese documento.','err');return}const e=list.find(x=>x.periodoId===S.periodoActual)||list.sort((a,b)=>(P(b.periodoId)||{codigo:''}).codigo.localeCompare((P(a.periodoId)||{codigo:''}).codigo))[0];sess={rol:'est',id:e.id}}
+  else{const dc=S.docentes.find(x=>x.documento===d);if(!dc){toast('No hay un docente registrado con ese documento.','err');return}sess={rol:'doc',id:dc.id}}}
+ try{localStorage.setItem(SKEY,JSON.stringify(sess))}catch(e){}view='';render();
+}
+/* ================= ADMINISTRADOR ================= */
+const kpi=(v,l,tone,goto)=>goto?`<button class="kpi ${tone||''}" onclick="go('${goto}')"><span class="v">${v}</span><span class="l">${l}</span></button>`:`<div class="kpi ${tone||''}"><span class="v">${v}</span><span class="l">${l}</span></div>`;
+function vDashboard(){
+ const est=estP(),sols=solP(),escs=escP(),p=per();
+ const act=est.map(e=>solActiva(e.id));
+ const conf=sols.filter(s=>s.estado==='confirmada').length,prov=sols.filter(s=>s.estado==='asignacion_provisional').length;
+ const sinAsig=act.filter(s=>!s).length,pVal=sols.filter(s=>s.estado==='pendiente_validacion').length,pEnt=sols.filter(s=>s.estado==='pendiente_entrevista').length;
+ const pMat=est.filter(e=>e.matricula!=='matriculado').length,provSinMat=sols.filter(s=>s.estado==='asignacion_provisional').length;
+ const abiertos=escs.filter(e=>!e.cerrado);const tc=abiertos.reduce((a,e)=>a+(+e.cupos||0),0),tl=abiertos.reduce((a,e)=>a+libres(e),0);
+ const disp=escs.filter(e=>['Disponible','En proceso'].includes(estadoEsc(e))).length,comp=escs.filter(e=>estadoEsc(e)==='Completo').length;
+ const porArea=S.config.areas.map(a=>{const ss=sols.filter(s=>(ESC(s.escenarioId)||{}).area===a);return{a,c:ss.filter(s=>s.estado==='confirmada').length,p:ss.filter(s=>s.estado==='asignacion_provisional').length,o:ss.filter(s=>['pendiente_validacion','pendiente_entrevista'].includes(s.estado)).length}});
+ const maxA=Math.max(1,...porArea.map(x=>x.c+x.p+x.o));
+ const etap={};est.forEach(e=>{const k=etapaActual(e);etap[k]=(etap[k]||0)+1});const ordenE=etapas(est[0]||{periodoId:p.id,matricula:''}).map(x=>x.k).concat(['Proceso al día']);
+ const cierre=p.cierreSel&&selAbierta(p)?Math.ceil((new Date(p.cierreSel+'T23:59')-new Date())/864e5):null;
+ const alertas=[];
+ if(pVal)alertas.push(['info',`${pVal} selecciones esperan validación.`,'asignaciones','Revisar']);
+ if(pEnt)alertas.push(['warn',`${pEnt} estudiantes tienen entrevista pendiente.`,'entrevistas','Registrar resultados']);
+ if(provSinMat)alertas.push(['warn',`${provSinMat} estudiantes con escenario aprobado aún no tienen matrícula financiera vigente.`,'matricula','Ver matrícula']);
+ if(cierre!=null&&cierre<=S.config.diasAviso)alertas.push(['bad',`El período de selección cierra en ${cierre} día(s) (${fD(p.cierreSel)}) y ${sinAsig} estudiantes no tienen escenario.`,'','Enviar recordatorio','recordatorioCierre()']);
+ return `<div class="stack">
+ <div class="hero"><div><h2>Período ${esc(p.codigo)}</h2><p class="muted">Selección ${selAbierta(p)?'abierta hasta el '+fD(p.cierreSel):'cerrada'} · Inicio de práctica ${fD(p.inicioPractica)}</p></div><div class="row"><button class="btn" onclick="go('reportes')">${ic('chart')} Reportes</button><button class="btn pri" onclick="formAsignar()">${ic('plus')} Asignar estudiante</button></div></div>
+ ${alertas.map(a=>`<div class="alert ${a[0]}">${ic('alert')}<div class="t" style="flex:1">${a[1]}</div><button class="btn sm" onclick="${a[4]||`go('${a[2]}')`}">${a[3]}</button></div>`).join('')}
+ <div class="kpis">${kpi(est.length,'Estudiantes inscritos','', 'estudiantes')}${kpi(conf,'Escenario confirmado','ok','asignaciones')}${kpi(prov+conf,'Con escenario asignado','info','asignaciones')}${kpi(sinAsig,'Pendientes de asignación','warn','estudiantes')}${kpi(pMat,'Pendientes de matrícula financiera','warn','matricula')}${kpi(pEnt,'Entrevistas pendientes','warn','entrevistas')}${kpi(disp,'Escenarios con cupo','', 'escenarios')}${kpi(comp,'Escenarios completos','bad','escenarios')}${kpi(tc,'Cupos totales')}${kpi(tl,'Cupos disponibles','info')}${kpi(S.docentes.length,'Docentes','', 'docentes')}</div>
+ <div class="grid2">
+  <div class="card"><h3>Estudiantes por área</h3><div class="hbars">${porArea.map(x=>`<div class="hb"><span class="lab">${esc(x.a)}</span><div class="stack-bar" title="${x.c} confirmados, ${x.p} provisionales, ${x.o} en trámite"><i style="width:${x.c/maxA*100}%;background:var(--ok)"></i><i style="width:${x.p/maxA*100}%;background:var(--accent)"></i><i style="width:${x.o/maxA*100}%;background:var(--info);opacity:.55"></i></div><span class="n">${x.c+x.p+x.o}</span></div>`).join('')}</div><div class="legend"><span><i style="background:var(--ok)"></i>Confirmados</span><span><i style="background:var(--accent)"></i>Provisionales</span><span><i style="background:var(--info);opacity:.55"></i>En trámite</span></div></div>
+  <div class="card"><h3>Dónde está cada estudiante</h3><div class="hbars">${ordenE.filter(k=>etap[k]).map(k=>`<div class="hb"><span class="lab">${esc(k)}</span>${barra(etap[k],est.length)}<span class="n">${etap[k]}</span></div>`).join('')||'<p class="muted">Sin estudiantes en este período.</p>'}</div></div>
+ </div>
+ <div class="card"><h3>Ocupación por escenario</h3><div class="hbars">${escs.slice().sort((a,b)=>ocupados(b.id)/(b.cupos||1)-ocupados(a.id)/(a.cupos||1)).map(e=>`<div class="hb"><span class="lab" title="${esc(nombreEsc(e))}">${esc(e.nombre)}</span>${barra(ocupados(e.id),+e.cupos)}<span class="n">${ocupados(e.id)}/${e.cupos}</span></div>`).join('')||'<p class="muted">No hay escenarios en este período.</p>'}</div></div>
+ </div>`;
+}
+function recordatorioCierre(){const p=per();const sin=estP().filter(e=>!solActiva(e.id));confirmar('Enviar recordatorio',`<p>Se enviará el aviso “El período de selección está próximo a finalizar” a ${sin.length} estudiantes sin escenario.</p>`,()=>act(()=>{sin.forEach(e=>notificar('cierre','est:'+e.id,`El período de selección está próximo a finalizar: cierra el ${fD(p.cierreSel)}.`));log('Recordatorio de cierre',sin.length+' estudiantes');toast('Recordatorio enviado')}),'Enviar')}
+
+/* ---- períodos ---- */
+function vPeriodos(){
+ return `<div class="stack"><div class="row"><p class="muted" style="margin:0;flex:1">Cada período conserva sus propios escenarios, estudiantes, asignaciones y seguimientos. Editar el calendario de un período no altera los anteriores.</p><button class="btn pri" onclick="formPeriodo()">${ic('plus')} Nuevo período</button></div>
+ <div class="tbl"><table><thead><tr><th>Período</th><th>Vigencia</th><th>Selección</th><th>Entrevistas</th><th>Matrícula</th><th>Inicio práctica</th><th>Datos</th><th></th></tr></thead><tbody>${S.periodos.slice().sort((a,b)=>b.codigo.localeCompare(a.codigo)).map(p=>`<tr><td><b>${esc(p.codigo)}</b>${p.id===S.periodoActual?'<span class="sub">En consulta</span>':''}</td><td>${fD(p.inicio)} – ${fD(p.fin)}</td><td>${fD(p.aperturaSel)} – ${fD(p.cierreSel)}<span class="sub">${selAbierta(p)?chip('Abierta','ok'):chip('Cerrada','')}${p.seleccion!=='auto'?' (manual)':''}</span></td><td>${fD(p.entrevistasIni)} – ${fD(p.entrevistasFin)}</td><td>${fD(p.matriculaIni)} – ${fD(p.matriculaFin)}</td><td>${fD(p.inicioPractica)}</td><td class="small">${S.estudiantes.filter(e=>e.periodoId===p.id).length} est. · ${S.escenarios.filter(e=>e.periodoId===p.id).length} esc.</td><td><div class="row"><button class="btn sm" onclick="formPeriodo('${p.id}')">Editar</button><button class="btn sm ghost" onclick="formCopiar('${p.id}')">Copiar escenarios</button></div></td></tr>`).join('')}</tbody></table></div></div>`;
+}
+function formPeriodo(id){const p=id?P(id):{codigo:'',seleccion:'auto'};
+ modal(id?'Editar período '+p.codigo:'Nuevo período académico',`<div class="form">${fld('Código del período','codigo',p.codigo,'text',{req:1,ph:'2027-2'})}${fld('Control de la selección','seleccion',p.seleccion||'auto','select',{options:[['auto','Según fechas'],['abierta','Abierta (manual)'],['cerrada','Cerrada (manual)']]})}<h4>Calendario</h4>${fld('Inicio del período','inicio',p.inicio,'date')}${fld('Fin del período','fin',p.fin,'date')}${fld('Apertura de selección','aperturaSel',p.aperturaSel,'date')}${fld('Cierre de selección','cierreSel',p.cierreSel,'date')}${fld('Entrevistas desde','entrevistasIni',p.entrevistasIni,'date')}${fld('Entrevistas hasta','entrevistasFin',p.entrevistasFin,'date')}${fld('Fecha de confirmación','confirmacion',p.confirmacion,'date')}${fld('Matrícula desde','matriculaIni',p.matriculaIni,'date')}${fld('Matrícula hasta','matriculaFin',p.matriculaFin,'date')}${fld('Inicio de práctica','inicioPractica',p.inicioPractica,'date')}</div>`,{foot:`<button class="btn ghost" onclick="cerrarModal()">Cancelar</button><button class="btn pri" onclick="guardarPeriodo('${id||''}')">Guardar período</button>`})}
+function guardarPeriodo(id){act(()=>{const v=leer(['codigo','seleccion','inicio','fin','aperturaSel','cierreSel','entrevistasIni','entrevistasFin','confirmacion','matriculaIni','matriculaFin','inicioPractica']);if(!v.codigo)throw new Error('Escribe el código del período.');if(S.periodos.some(p=>p.codigo===v.codigo&&p.id!==id))throw new Error('Ya existe el período '+v.codigo+'.');
+ if(id){Object.assign(P(id),v);log('Edición de período',v.codigo)}else{const np=Object.assign({id:uid('p')},v);S.periodos.push(np);S.periodoActual=np.id;log('Creación de período',v.codigo)}cerrarModal();toast('Período guardado')})}
+function formCopiar(destId){const otros=S.periodos.filter(p=>p.id!==destId);if(!otros.length){toast('No hay otros períodos de donde copiar.','err');return}
+ modal('Copiar escenarios a '+P(destId).codigo,`<p class="muted">Se crean copias de los escenarios y vacantes del período de origen (sin estudiantes). Los registros del período de origen no cambian.</p><div class="form">${fld('Período de origen','origen',otros[0].id,'select',{options:otros.map(p=>[p.id,p.codigo+' ('+S.escenarios.filter(e=>e.periodoId===p.id).length+' escenarios)'])})}</div>`,{foot:`<button class="btn ghost" onclick="cerrarModal()">Cancelar</button><button class="btn pri" onclick="copiarEsc('${destId}')">Copiar escenarios</button>`})}
+function copiarEsc(destId){act(()=>{const o=leer(['origen']).origen;const ex=new Set(S.escenarios.filter(e=>e.periodoId===destId).map(e=>norm(e.nombre+'|'+e.cargo)));let n=0;S.escenarios.filter(e=>e.periodoId===o).forEach(e=>{if(ex.has(norm(e.nombre+'|'+e.cargo)))return;S.escenarios.push(Object.assign({},e,{id:uid('esc'),periodoId:destId,cerrado:false,fechaLimite:''}));n++});log('Copia de escenarios',`${n} desde ${P(o).codigo} hacia ${P(destId).codigo}`);cerrarModal();toast(n+' escenarios copiados (los que ya existían se omitieron).')})}
+
+/* ---- estudiantes ---- */
+function vEstudiantes(){
+ F.est=F.est||{q:'',area:'',esc:'',estado:'',doc:'',mat:''};const f=F.est;
+ curTabla=tablaEst;
+ return `<div class="filters"><input class="q" type="search" placeholder="Buscar por nombre, documento o código" value="${esc(f.q)}" oninput="F.est.q=this.value;tablaEst()" aria-label="Buscar estudiante">
+ <select onchange="F.est.area=this.value;tablaEst()" aria-label="Área">${opts(S.config.areas,'Todas las áreas').map(o=>{const [v,t]=Array.isArray(o)?o:[o,o];return `<option value="${esc(v)}" ${f.area===v?'selected':''}>${esc(t)}</option>`}).join('')}</select>
+ <select onchange="F.est.esc=this.value;tablaEst()" aria-label="Escenario"><option value="">Todos los escenarios</option>${escP().map(e=>`<option value="${e.id}" ${f.esc===e.id?'selected':''}>${esc(nombreEsc(e))}</option>`).join('')}</select>
+ <select onchange="F.est.estado=this.value;tablaEst()" aria-label="Estado"><option value="">Todos los estados</option><option value="sin" ${f.estado==='sin'?'selected':''}>Sin escenario</option>${ACTIVOS.map(k=>`<option value="${k}" ${f.estado===k?'selected':''}>${EST_SOL[k]}</option>`).join('')}</select>
+ <select onchange="F.est.doc=this.value;tablaEst()" aria-label="Docente"><option value="">Todos los docentes</option>${S.docentes.map(d=>`<option value="${d.id}" ${f.doc===d.id?'selected':''}>${esc(d.nombre)}</option>`).join('')}</select>
+ <select onchange="F.est.mat=this.value;tablaEst()" aria-label="Matrícula financiera"><option value="">Matrícula: todas</option>${Object.entries(MAT).map(([k,t])=>`<option value="${k}" ${f.mat===k?'selected':''}>${t}</option>`).join('')}</select>
+ <span class="spacer"></span><button class="btn" onclick="importarEstudiantes()">${ic('up')} Importar Excel</button><button class="btn" onclick="exportarEst()">${ic('down')} Exportar</button><button class="btn pri" onclick="formEst()">${ic('plus')} Nuevo</button></div>
+ <div id="tbl"></div>`;
+}
+function filtrarEst(){const f=F.est,q=norm(f.q);return estP().filter(e=>{const s=solActiva(e.id),es=s&&ESC(s.escenarioId);if(q&&!norm(nombreCompleto(e)+' '+e.documento+' '+e.codigo).includes(q))return false;if(f.area&&(es?es.area:e.area1)!==f.area)return false;if(f.esc&&(!s||s.escenarioId!==f.esc))return false;if(f.estado==='sin'&&s)return false;if(f.estado&&f.estado!=='sin'&&(!s||s.estado!==f.estado))return false;if(f.doc&&(docenteDe(s)||{}).id!==f.doc)return false;if(f.mat&&e.matricula!==f.mat)return false;return true}).sort((a,b)=>nombreCompleto(a).localeCompare(nombreCompleto(b)))}
+function tablaEst(){const l=filtrarEst();$('#tbl').innerHTML=`<p class="count">${l.length} de ${estP().length} estudiantes · período ${esc(per().codigo)}</p>`+(l.length?`<div class="tbl"><table><thead><tr><th>Estudiante</th><th>Código</th><th>Área de interés</th><th>Escenario</th><th>Estado</th><th>Matrícula fin.</th><th>Etapa actual</th><th>Docente</th></tr></thead><tbody>${l.map(e=>{const s=solActiva(e.id),es=s&&ESC(s.escenarioId),d=docenteDe(s);return `<tr class="click" onclick="fichaEst('${e.id}')"><td><b>${esc(nombreCompleto(e))}</b><span class="sub">${esc(e.tipoDoc)} ${esc(e.documento)}</span></td><td>${esc(e.codigo||'—')}</td><td>${esc(e.area1||'—')}${e.area2?`<span class="sub">2.ª ${esc(e.area2)}</span>`:''}</td><td>${esc(nombreEsc(es))}${es?`<span class="sub">${esc(es.area)}</span>`:''}</td><td>${chipSol(s)}</td><td>${chipMat(e.matricula)}</td><td class="small">${esc(etapaActual(e))}</td><td class="small">${esc(d?d.nombre:'—')}</td></tr>`}).join('')}</tbody></table></div>`:`<div class="card empty"><b>${estP().length?'Ningún estudiante coincide con los filtros':'Aún no hay estudiantes en este período'}</b>${estP().length?'Ajusta o limpia los filtros.':'Importa el Excel de inscripciones o crea estudiantes uno a uno.'}</div>`)}
+function exportarEst(){const l=filtrarEst();run(()=>xlsxLibro([{nombre:'Estudiantes '+per().codigo,filas:[['Nombres','Apellidos','Tipo doc.','Documento','Código','Correo','Teléfono','Ciudad','Semestre','Jornada','Trabaja','Área opción 1','Área opción 2','Escenario','Área escenario','Estado','Matrícula financiera','Etapa actual','Docente supervisor']].concat(l.map(e=>{const s=solActiva(e.id),es=s&&ESC(s.escenarioId),d=docenteDe(s);return [e.nombres,e.apellidos,e.tipoDoc,e.documento,e.codigo,e.email,e.telefono,e.ciudad,e.semestre,e.jornada,e.trabaja,e.area1,e.area2,es?nombreEsc(es):'',es?es.area:'',textoSol(s),MAT[e.matricula],etapaActual(e),d?d.nombre:'']}))}],`estudiantes-${per().codigo}.xlsx`))}
+function fichaEst(id){const e=E(id);if(!e)return;const s=solActiva(id);const sols=S.solicitudes.filter(x=>x.estudianteId===id).sort((a,b)=>b.fecha.localeCompare(a.fecha));const es=s&&ESC(s.escenarioId);const d=docenteDe(s);
+ modal(nombreCompleto(e),`<div class="stack"><div class="row">${chipSol(s)} ${chipMat(e.matricula)} ${e.cambioHabilitado?chip('Cambio habilitado','info'):''}</div>${ruta(e,true)}
+ <dl class="dl">${[['Documento',e.tipoDoc+' '+e.documento],['Código estudiantil',e.codigo||'—'],['Correo',e.email||'—'],['Teléfono',e.telefono||'—'],['Ciudad',e.ciudad||'—'],['Semestre',e.semestre||'—'],['Jornada',e.jornada||'—'],['Trabaja',e.trabaja||'—'],['Área opción 1',e.area1||'—'],['Área opción 2',e.area2||'—'],['Escenario',es?nombreEsc(es):'—'],['Docente supervisor',d?d.nombre:'—']].map(([k,v])=>`<div><dt>${k}</dt><dd>${esc_(v)}</dd></div>`).join('')}</dl>
+ <div class="form">${fld('Matrícula financiera','mat_'+id,e.matricula,'select',{options:Object.entries(MAT)})}<div class="fld" style="justify-content:end"><button class="btn" onclick="setMatricula('${id}',document.getElementById('f_mat_${id}').value,true)">Actualizar matrícula</button></div></div>
+ <div><h4 style="margin-bottom:8px">Historial de selecciones</h4>${sols.length?`<ul class="tl">${sols.map(x=>`<li><div class="d">${fDH(x.fecha)}</div><div class="ty">${esc_(nombreEsc(ESC(x.escenarioId)))} ${chipSol(x)}</div>${(x.historial||[]).map(h=>`<div class="mt">${fDH(h.fecha)} · ${esc_(h.texto)} · ${esc_(h.usuario||'')}</div>`).join('')}</li>`).join('')}</ul>`:'<p class="muted">Sin selecciones registradas.</p>'}</div></div>`,
+ {wide:true,foot:`<button class="btn" onclick="formEst('${id}')">${ic('edit')} Editar datos</button>${!s?`<button class="btn pri" onclick="formAsignar('${id}')">Asignar escenario</button>`:''}${s?`<button class="btn" onclick="formReasignar('${s.id}')">Reasignar</button><button class="btn danger" onclick="formLiberar('${s.id}')">Liberar cupo</button>`:''}${s&&s.estado==='confirmada'?`<button class="btn" onclick="toggleCambio('${id}')">${e.cambioHabilitado?'Bloquear cambio':'Habilitar cambio al estudiante'}</button>`:''}${!sols.length?`<button class="btn danger" onclick="eliminarEst('${id}')">Eliminar</button>`:''}`});
+}
+const esc_=esc;
+function toggleCambio(id){act(()=>{const e=E(id);e.cambioHabilitado=!e.cambioHabilitado;log(e.cambioHabilitado?'Cambio habilitado':'Cambio bloqueado',nombreCompleto(e));fichaEst(id)})}
+function eliminarEst(id){confirmar('Eliminar estudiante','<p>Se eliminará el registro del estudiante en este período. Esta acción no se puede deshacer.</p>',()=>act(()=>{const e=E(id);S.estudiantes=S.estudiantes.filter(x=>x.id!==id);log('Eliminación de estudiante',nombreCompleto(e)+' · '+e.documento)}),'Eliminar',true)}
+function setMatricula(id,val,reabrir){act(()=>{const e=E(id);if(e.matricula===val)return;const ant=e.matricula;e.matricula=val;e.matriculaFecha=ahora();log('Matrícula financiera',`${nombreCompleto(e)}: ${MAT[ant]} → ${MAT[val]}`);if(val!=='matriculado'&&solActiva(id))notificar('matricula','est:'+id,'Tu matrícula financiera está pendiente.');toast('Matrícula actualizada')});if(reabrir)fichaEst(id)}
+function formEst(id){const e=id?E(id):{tipoDoc:'Cédula',matricula:'pendiente'};
+ modal(id?'Editar estudiante':'Nuevo estudiante',`<div class="form">${fld('Nombres','nombres',e.nombres,'text',{req:1})}${fld('Apellidos','apellidos',e.apellidos,'text',{req:1})}${fld('Tipo de documento','tipoDoc',e.tipoDoc,'select',{options:['Cédula','Tarjeta de identidad','Cédula de extranjería','Pasaporte','PPT']})}${fld('Número de documento','documento',e.documento,'text',{req:1})}${fld('Código estudiantil','codigo',e.codigo)}${fld('Correo','email',e.email,'email')}${fld('Teléfono','telefono',e.telefono)}${fld('Ciudad','ciudad',e.ciudad)}${fld('Semestre','semestre',e.semestre)}${fld('Jornada','jornada',e.jornada||'Diurna','select',{options:['Diurna','Nocturna']})}${fld('Trabaja','trabaja',e.trabaja||'No','select',{options:['No','Sí']})}${fld('Área opción 1','area1',e.area1,'select',{options:opts(S.config.areas,'—')})}${fld('Área opción 2','area2',e.area2,'select',{options:opts(S.config.areas,'—')})}${id?'':fld('Matrícula financiera','matricula',e.matricula,'select',{options:Object.entries(MAT)})}</div>`,{wide:true,foot:`<button class="btn ghost" onclick="cerrarModal()">Cancelar</button><button class="btn pri" onclick="guardarEst('${id||''}')">Guardar estudiante</button>`})}
+function guardarEst(id){act(()=>{const v=leer(['nombres','apellidos','tipoDoc','documento','codigo','email','telefono','ciudad','semestre','jornada','trabaja','area1','area2','matricula']);v.documento=v.documento.replace(/[^\dA-Za-z]/g,'');if(!v.nombres||!v.apellidos||!v.documento)throw new Error('Nombres, apellidos y documento son obligatorios.');const pid=id?E(id).periodoId:per().id;if(S.estudiantes.some(e=>e.periodoId===pid&&e.documento===v.documento&&e.id!==id))throw new Error('Ya existe un estudiante con ese documento en el período.');
+ if(id){delete v.matricula;Object.assign(E(id),v);log('Edición de estudiante',v.nombres+' '+v.apellidos)}else{S.estudiantes.push(Object.assign({id:uid('e'),periodoId:pid,cambioHabilitado:false,areaPrevia:''},v));log('Creación de estudiante',v.nombres+' '+v.apellidos)}cerrarModal();toast('Estudiante guardado')})}
+
+/* ---- escenarios y vacantes ---- */
+function vEscAdmin(tipo){
+ const k='esc_'+tipo;F[k]=F[k]||{q:'',area:'',ciudad:'',disp:'',ent:'',estado:''};const f=F[k];
+ curTabla=()=>tablaEscAdmin(tipo);const ciudades=[...new Set(escP(tipo).map(e=>e.ciudad).filter(Boolean))].sort();
+ const sel=(campo,arr,tod)=>`<select onchange="F['${k}'].${campo}=this.value;tablaEscAdmin('${tipo}')" aria-label="${tod}">${opts(arr,tod).map(o=>{const [v,t]=Array.isArray(o)?o:[o,o];return `<option value="${esc(v)}" ${f[campo]===v?'selected':''}>${esc(t)}</option>`}).join('')}</select>`;
+ return `<div class="filters"><input class="q" type="search" placeholder="Buscar ${tipo==='vacante'?'empresa o cargo':'institución'}" value="${esc(f.q)}" oninput="F['${k}'].q=this.value;tablaEscAdmin('${tipo}')" aria-label="Buscar">${tipo==='escenario'?sel('area',S.config.areas,'Todas las áreas'):''}${sel('ciudad',ciudades,'Todas las ciudades')}${sel('disp',[['si','Con cupos'],['no','Sin cupos']],'Disponibilidad')}${sel('ent',[['si','Requiere entrevista'],['no','Sin entrevista']],'Entrevista')}${sel('estado',['Disponible','En proceso','Completo','Cerrado'],'Todos los estados')}
+ <span class="spacer"></span><button class="btn" onclick="plantillaEscenarios()">${ic('down')} Plantilla</button><button class="btn" onclick="importarEscenarios()">${ic('up')} Importar Excel</button><button class="btn pri" onclick="formEsc('','${tipo}')">${ic('plus')} ${tipo==='vacante'?'Nueva vacante':'Nuevo escenario'}</button></div><div id="tbl"></div>`;
+}
+function tablaEscAdmin(tipo){const f=F['esc_'+tipo],q=norm(f.q);
+ const l=escP(tipo).filter(e=>{if(q&&!norm(e.nombre+' '+e.cargo+' '+e.ciudad).includes(q))return false;if(f.area&&e.area!==f.area)return false;if(f.ciudad&&e.ciudad!==f.ciudad)return false;if(f.disp==='si'&&(libres(e)<=0||e.cerrado))return false;if(f.disp==='no'&&libres(e)>0&&!e.cerrado)return false;if(f.ent&&(f.ent==='si')!==!!e.requiereEntrevista)return false;if(f.estado&&estadoEsc(e)!==f.estado)return false;return true}).sort((a,b)=>a.area.localeCompare(b.area)||a.nombre.localeCompare(b.nombre));
+ $('#tbl').innerHTML=`<p class="count">${l.length} ${tipo==='vacante'?'vacantes':'escenarios'} · período ${esc(per().codigo)}</p>`+(l.length?`<div class="tbl"><table><thead><tr><th>${tipo==='vacante'?'Empresa y cargo':'Escenario'}</th><th>Área</th><th>Ocupación</th><th>Estado</th><th>Entrevista</th>${tipo==='vacante'?'<th>Fecha límite</th>':''}<th>Docente</th><th></th></tr></thead><tbody>${l.map(e=>{const o=ocupados(e.id),pe=S.solicitudes.filter(s=>s.escenarioId===e.id&&s.estado==='pendiente_entrevista').length;return `<tr><td><b>${esc(e.nombre)}</b><span class="sub">${tipo==='vacante'?esc(e.cargo)+' · ':''}${esc(e.ciudad||'')}${e.jornada==='Nocturna'?' · Nocturna':''}</span></td><td><span class="chip" style="background:color-mix(in srgb,${areaCol(e.area)} 14%,transparent);color:${areaCol(e.area)}">${esc(e.area)}</span></td><td style="min-width:150px"><div class="occ">${barra(o,+e.cupos)}<span>${o}/${e.cupos}</span></div>${pe?`<span class="sub">${pe} en entrevista</span>`:''}</td><td>${chipEsc(e)}</td><td>${e.requiereEntrevista?chip('Requiere','warn'):'<span class="muted">No</span>'}</td>${tipo==='vacante'?`<td>${fD(e.fechaLimite)}${vencida(e)?'<span class="sub">Vencida</span>':''}</td>`:''}<td class="small">${esc((D(e.docenteId)||{}).nombre||'—')}</td><td><div class="row" style="flex-wrap:nowrap"><button class="btn sm" onclick="verEscEst('${e.id}')">Estudiantes</button><button class="btn sm" onclick="formEsc('${e.id}','${tipo}')">Editar</button><button class="btn sm ghost" onclick="toggleCerrar('${e.id}')">${e.cerrado?'Reabrir':'Cerrar'}</button></div></td></tr>`}).join('')}</tbody></table></div>`:`<div class="card empty"><b>No hay ${tipo==='vacante'?'vacantes':'escenarios'} para mostrar</b>Crea uno nuevo, impórtalos desde Excel o cópialos de un período anterior en Períodos académicos.</div>`)}
+function formEsc(id,tipo){const e=id?ESC(id):{tipo,area:tipo==='vacante'?'Organizacional':'',cupos:1,modalidad:'Presencial',jornada:'Diurna'};const vac=(e.tipo||tipo)==='vacante';const oc=id?ocupados(id):0;
+ modal(id?'Editar '+(vac?'vacante':'escenario'):(vac?'Nueva vacante':'Nuevo escenario'),`<div class="form">${fld(vac?'Empresa / institución':'Nombre de la institución','nombre',e.nombre,'text',{req:1,cls:'full'})}${vac?fld('Cargo o rol de práctica','cargo',e.cargo,'text',{req:1}):''}${fld('Área de práctica','area',e.area,'select',{options:opts(S.config.areas,'Elige un área'),req:1})}${fld(vac?'Número de vacantes':'Número total de cupos','cupos',e.cupos,'number',{min:oc,req:1,help:oc?`Hay ${oc} cupos ocupados; no puede ser menor.`:''})}${fld('Ciudad','ciudad',e.ciudad)}${fld('Dirección','direccion',e.direccion)}${fld('Jornada','jornada',e.jornada||'Diurna','select',{options:['Diurna','Nocturna','Mixta']})}${fld('Persona de contacto','contacto',e.contacto)}${fld('Teléfono de contacto','telefono',e.telefono)}${fld('Correo de contacto','email',e.email,'email')}${fld('Docente supervisor asociado','docenteId',e.docenteId,'select',{options:[['','Sin asignar']].concat(S.docentes.map(d=>[d.id,d.nombre]))})}
+ <h4>Entrevista</h4>${fld('Requiere entrevista','requiereEntrevista',e.requiereEntrevista,'check',{cls:'full'})}${fld('Modalidad de entrevista','modalidadEntrevista',e.modalidadEntrevista,'select',{options:['','Presencial','Virtual','Telefónica']})}${fld('Fechas del proceso de entrevista','fechasEntrevista',e.fechasEntrevista,'text',{ph:'Ej.: 3 al 13 de noviembre'})}
+ ${vac?`<h4>Detalle de la vacante</h4>${fld('Modalidad','modalidad',e.modalidad,'select',{options:['Presencial','Híbrida','Remota']})}${fld('Fecha límite de postulación','fechaLimite',e.fechaLimite,'date')}${fld('Descripción','descripcion',e.descripcion,'textarea',{cls:'full'})}${fld('Perfil solicitado','perfil',e.perfil,'textarea',{cls:'full'})}${fld('Proceso de selección','procesoSeleccion',e.procesoSeleccion,'textarea',{cls:'full'})}`:''}
+ <h4>Información para estudiantes</h4>${fld('Requisitos específicos','requisitos',e.requisitos,'textarea',{cls:'full'})}${fld(vac?'Información adicional':'Observaciones','observaciones',e.observaciones,'textarea',{cls:'full'})}</div>`,
+ {wide:true,foot:`${id&&!S.solicitudes.some(s=>s.escenarioId===id)?`<button class="btn danger" onclick="eliminarEsc('${id}')">Eliminar</button><span class="spacer"></span>`:''}<button class="btn ghost" onclick="cerrarModal()">Cancelar</button><button class="btn pri" onclick="guardarEsc('${id||''}','${e.tipo||tipo}')">Guardar</button>`})}
+function guardarEsc(id,tipo){act(()=>{const v=leer(['nombre','cargo','area','cupos','ciudad','direccion','jornada','contacto','telefono','email','docenteId','requiereEntrevista','modalidadEntrevista','fechasEntrevista','modalidad','fechaLimite','descripcion','perfil','procesoSeleccion','requisitos','observaciones']);v.cupos=parseInt(v.cupos,10);
+ if(!v.nombre)throw new Error('Escribe el nombre.');if(!v.area)throw new Error('Elige el área de práctica.');if(tipo==='vacante'&&!v.cargo)throw new Error('Escribe el cargo o rol de práctica.');if(!(v.cupos>=0))throw new Error('El número de cupos no es válido.');
+ if(id){const oc=ocupados(id);if(v.cupos<oc)throw new Error(`No se puede reducir a ${v.cupos}: ya hay ${oc} cupos ocupados.`);const e=ESC(id);const cambios=Object.keys(v).filter(k=>String(e[k]??'')!==String(v[k]??'')).join(', ');Object.assign(e,v);log('Edición de escenario',`${e.nombre}${cambios?' · campos: '+cambios:''}`)}
+ else{S.escenarios.push(Object.assign({id:uid('esc'),periodoId:per().id,tipo,cerrado:false},v));log('Creación de escenario',v.nombre)}cerrarModal();toast('Guardado')})}
+function eliminarEsc(id){confirmar('Eliminar','<p>Este registro no tiene selecciones asociadas y se eliminará definitivamente.</p>',()=>act(()=>{const e=ESC(id);S.escenarios=S.escenarios.filter(x=>x.id!==id);log('Eliminación de escenario',e.nombre)}),'Eliminar',true)}
+function toggleCerrar(id){act(()=>{const e=ESC(id);e.cerrado=!e.cerrado;log(e.cerrado?'Escenario cerrado':'Escenario reabierto',e.nombre);toast(e.cerrado?'Escenario cerrado: no recibirá nuevas selecciones':'Escenario reabierto')})}
+function verEscEst(id){const e=ESC(id);const l=S.solicitudes.filter(s=>s.escenarioId===id&&ACTIVOS.includes(s.estado));
+ modal(nombreEsc(e),`<p class="muted">${ocupados(id)} de ${e.cupos} cupos ocupados · ${chipEsc(e)}</p>${l.length?`<div class="tbl"><table><thead><tr><th>Estudiante</th><th>Estado</th><th>Matrícula</th><th>Fecha</th></tr></thead><tbody>${l.map(s=>{const st=E(s.estudianteId);return `<tr class="click" onclick="fichaEst('${st.id}')"><td>${esc(nombreCompleto(st))}<span class="sub">${esc(st.documento)}</span></td><td>${chipSol(s)}</td><td>${chipMat(st.matricula)}</td><td class="small">${fDH(s.fecha)}</td></tr>`}).join('')}</tbody></table></div>`:'<p class="muted">Aún no hay estudiantes en este escenario.</p>'}`,{wide:true})}
+/* ---- entrevistas ---- */
+function vEntrevistas(){F.ent=F.ent||{q:'',estado:'Pendiente',esc:''};const f=F.ent;curTabla=tablaEnt;
+ return `<div class="alert info">${ic('info')}<div class="t">La asignación definitiva en escenarios con entrevista solo se habilita cuando el resultado es <b>Aprobado</b> y aún hay cupos. Si el resultado es No aprobado, el estudiante puede elegir otro escenario.</div></div><div style="height:14px"></div>
+ <div class="filters"><input class="q" type="search" placeholder="Buscar estudiante" value="${esc(f.q)}" oninput="F.ent.q=this.value;tablaEnt()" aria-label="Buscar"><select onchange="F.ent.estado=this.value;tablaEnt()" aria-label="Estado de la entrevista">${opts(['Pendiente','Aprobado','No aprobado'],'Todas').map(o=>{const [v,t]=Array.isArray(o)?o:[o,o];return `<option value="${v}" ${f.estado===v?'selected':''}>${t}</option>`}).join('')}</select><select onchange="F.ent.esc=this.value;tablaEnt()" aria-label="Escenario"><option value="">Todos los escenarios</option>${escP().filter(e=>e.requiereEntrevista).map(e=>`<option value="${e.id}" ${f.esc===e.id?'selected':''}>${esc(nombreEsc(e))}</option>`).join('')}</select></div><div id="tbl"></div>`}
+function tablaEnt(){const f=F.ent,q=norm(f.q);const l=solP().filter(s=>s.entrevista&&s.estado!=='anulada').filter(s=>{const e=E(s.estudianteId);if(q&&!norm(nombreCompleto(e)+' '+e.documento).includes(q))return false;if(f.estado&&s.entrevista.estado!==f.estado)return false;if(f.esc&&s.escenarioId!==f.esc)return false;return true}).sort((a,b)=>(a.entrevista.fecha||'9').localeCompare(b.entrevista.fecha||'9'));
+ $('#tbl').innerHTML=`<p class="count">${l.length} procesos de entrevista</p>`+(l.length?`<div class="tbl"><table><thead><tr><th>Estudiante</th><th>Escenario</th><th>Cupos libres</th><th>Fecha de entrevista</th><th>Resultado</th><th>Solicitud</th><th></th></tr></thead><tbody>${l.map(s=>{const e=E(s.estudianteId),es=ESC(s.escenarioId),en=s.entrevista;return `<tr><td><b>${esc(nombreCompleto(e))}</b><span class="sub">${esc(e.documento)}</span></td><td>${esc(nombreEsc(es))}<span class="sub">${esc(es.modalidadEntrevista||'')}</span></td><td>${libres(es)} de ${es.cupos}</td><td>${en.fecha?fDH(en.fecha):'<span class="muted">Sin programar</span>'}</td><td>${chip(en.estado,{Pendiente:'warn',Aprobado:'ok','No aprobado':'bad'}[en.estado])}${en.observaciones?`<span class="sub">${esc(en.observaciones)}</span>`:''}</td><td>${chipSol(s)}</td><td>${s.estado==='pendiente_entrevista'?`<button class="btn sm pri" onclick="formEntrevista('${s.id}')">Registrar</button>`:''}</td></tr>`}).join('')}</tbody></table></div>`:`<div class="card empty"><b>No hay entrevistas con estos filtros</b>Las entrevistas aparecen cuando un estudiante selecciona un escenario que la requiere.</div>`)}
+function formEntrevista(id){const s=SOL(id),e=E(s.estudianteId),es=ESC(s.escenarioId),en=s.entrevista||{};
+ modal('Entrevista · '+nombreCompleto(e),`<p class="muted">${esc(nombreEsc(es))} · ${libres(es)} cupos libres</p><div class="form">${fld('Fecha y hora','ent_fecha',en.fecha,'datetime-local')}${fld('Estado','ent_estado',en.estado||'Pendiente','select',{options:['Pendiente','Aprobado','No aprobado']})}${fld('Resultado y observaciones','ent_obs',en.observaciones,'textarea',{cls:'full'})}</div>`,{foot:`<button class="btn ghost" onclick="cerrarModal()">Cancelar</button><button class="btn pri" onclick="guardarEntrevista('${id}')">Guardar resultado</button>`})}
+function guardarEntrevista(id){act(()=>{const s=SOL(id),es=ESC(s.escenarioId),est=E(s.estudianteId);const v=leer(['ent_fecha','ent_estado','ent_obs']);
+ if(s.estado!=='pendiente_entrevista')throw new Error('Esta solicitud ya no está pendiente de entrevista.');
+ if(v.ent_estado==='Aprobado'&&libres(es)<=0)throw new Error('CUPO COMPLETO: no quedan cupos en este escenario para aprobar la entrevista.');
+ s.entrevista=Object.assign({},s.entrevista,{fecha:v.ent_fecha,observaciones:v.ent_obs,estado:v.ent_estado,registrado:ahora()});
+ if(v.ent_estado==='Aprobado'){s.estado='asignacion_provisional';hist(s,'Entrevista aprobada');postAprob(s)}
+ else if(v.ent_estado==='No aprobado'){s.estado='no_aprobada';hist(s,'Entrevista no aprobada'+(v.ent_obs?': '+v.ent_obs:''));notificar('aprobado','est:'+est.id,`El resultado de tu entrevista en ${es.nombre} fue no aprobado. Puedes elegir otro escenario.`)}
+ else{hist(s,'Entrevista programada'+(v.ent_fecha?' para el '+fDH(v.ent_fecha):''));notificar('entrevista','est:'+est.id,`Tu entrevista está pendiente${v.ent_fecha?': '+fDH(v.ent_fecha):''} · ${es.nombre}.`)}
+ log('Registro de entrevista',desc(s)+' · '+v.ent_estado);cerrarModal();toast('Entrevista registrada')})}
+
+/* ---- asignaciones ---- */
+function vAsignaciones(){F.asg=F.asg||{q:'',estado:'',area:'',esc:''};const f=F.asg;curTabla=tablaAsg;const pv=solP().filter(s=>s.estado==='pendiente_validacion').length;
+ return `<div class="filters"><input class="q" type="search" placeholder="Buscar estudiante" value="${esc(f.q)}" oninput="F.asg.q=this.value;tablaAsg()" aria-label="Buscar"><select onchange="F.asg.estado=this.value;tablaAsg()" aria-label="Estado"><option value="">Selecciones activas</option>${Object.entries(EST_SOL).map(([k,t])=>`<option value="${k}" ${f.estado===k?'selected':''}>${t}</option>`).join('')}<option value="todas" ${f.estado==='todas'?'selected':''}>Todas, incluidas anuladas</option></select><select onchange="F.asg.area=this.value;tablaAsg()" aria-label="Área">${opts(S.config.areas,'Todas las áreas').map(o=>{const [v,t]=Array.isArray(o)?o:[o,o];return `<option value="${esc(v)}" ${f.area===v?'selected':''}>${esc(t)}</option>`}).join('')}</select><select onchange="F.asg.esc=this.value;tablaAsg()" aria-label="Escenario"><option value="">Todos los escenarios</option>${escP().map(e=>`<option value="${e.id}" ${f.esc===e.id?'selected':''}>${esc(nombreEsc(e))}</option>`).join('')}</select><span class="spacer"></span>${pv?`<button class="btn ok" onclick="aprobarTodas()">${ic('tick')} Aprobar ${pv} pendientes</button>`:''}<button class="btn pri" onclick="formAsignar()">${ic('plus')} Asignar estudiante</button></div><div id="tbl"></div>`}
+function tablaAsg(){const f=F.asg,q=norm(f.q);const l=solP().filter(s=>{const e=E(s.estudianteId),es=ESC(s.escenarioId);if(!e||!es)return false;if(q&&!norm(nombreCompleto(e)+' '+e.documento+' '+e.codigo).includes(q))return false;if(f.estado==='todas'){}else if(f.estado){if(s.estado!==f.estado)return false}else if(!ACTIVOS.includes(s.estado))return false;if(f.area&&es.area!==f.area)return false;if(f.esc&&s.escenarioId!==f.esc)return false;return true}).sort((a,b)=>b.fecha.localeCompare(a.fecha));
+ $('#tbl').innerHTML=`<p class="count">${l.length} registros</p>`+(l.length?`<div class="tbl"><table><thead><tr><th>Estudiante</th><th>Escenario</th><th>Seleccionado</th><th>Estado</th><th>Matrícula fin.</th><th>Docente</th><th>Acciones</th></tr></thead><tbody>${l.map(s=>{const e=E(s.estudianteId),es=ESC(s.escenarioId),d=docenteDe(s);const a=[];
+  if(s.estado==='pendiente_validacion')a.push(`<button class="btn sm ok" onclick="aprobar('${s.id}')">Aprobar</button>`);
+  if(s.estado==='pendiente_entrevista')a.push(`<button class="btn sm" onclick="formEntrevista('${s.id}')">Entrevista</button>`);
+  if(['pendiente_validacion','pendiente_entrevista'].includes(s.estado))a.push(`<button class="btn sm danger" onclick="formRechazar('${s.id}')">No aprobar</button>`);
+  if(ASIG.includes(s.estado))a.push(`<button class="btn sm" onclick="formDocente('${s.id}')">Docente</button><button class="btn sm" onclick="formReasignar('${s.id}')">Reasignar</button><button class="btn sm danger" onclick="formLiberar('${s.id}')">Liberar</button>`);
+  return `<tr><td><b class="click" style="cursor:pointer" onclick="fichaEst('${e.id}')">${esc(nombreCompleto(e))}</b><span class="sub">${esc(e.documento)}</span></td><td>${esc(nombreEsc(es))}<span class="sub">${esc(es.area)}${es.requiereEntrevista?' · con entrevista':''}</span></td><td class="small">${fDH(s.fecha)}</td><td>${chipSol(s)}${s.fechaConfirmacion?`<span class="sub">Confirmado ${fDL(s.fechaConfirmacion)}</span>`:''}</td><td>${chipMat(e.matricula)}</td><td class="small">${esc(d?d.nombre:'—')}</td><td><div class="row" style="flex-wrap:nowrap">${a.join('')}</div></td></tr>`}).join('')}</tbody></table></div>`:`<div class="card empty"><b>No hay asignaciones con estos filtros</b>Las selecciones de los estudiantes aparecerán aquí para su validación.</div>`)}
+function aprobar(id){act(()=>{const s=SOL(id);if(s.estado!=='pendiente_validacion')throw new Error('Solo se aprueban selecciones pendientes de validación.');s.estado='asignacion_provisional';hist(s,'Selección aprobada por la coordinación');postAprob(s);log('Aprobación de selección',desc(s));toast('Selección aprobada')})}
+function aprobarTodas(){const l=solP().filter(s=>s.estado==='pendiente_validacion');confirmar('Aprobar selecciones',`<p>Se aprobarán ${l.length} selecciones pendientes de validación. Cada una quedará en asignación provisional hasta que el estudiante tenga matrícula financiera vigente.</p>`,()=>act(()=>{l.forEach(s=>{s.estado='asignacion_provisional';hist(s,'Selección aprobada por la coordinación (aprobación masiva)');postAprob(s)});log('Aprobación masiva',l.length+' selecciones');toast(l.length+' selecciones aprobadas')}),'Aprobar todas')}
+function formMotivo(tit,txt,btn,fnName,id,danger){modal(tit,`<p>${txt}</p>${fld('Motivo','motivo','','textarea',{req:1})}`,{foot:`<button class="btn ghost" onclick="cerrarModal()">Cancelar</button><button class="btn ${danger?'danger':'pri'}" onclick="${fnName}('${id}')">${btn}</button>`})}
+function formRechazar(id){formMotivo('No aprobar selección',esc(desc(SOL(id))),'No aprobar','doRechazar',id,true)}
+function doRechazar(id){act(()=>{const m=leer(['motivo']).motivo;if(!m)throw new Error('Escribe el motivo.');const s=SOL(id);s.estado='no_aprobada';if(s.entrevista&&s.entrevista.estado==='Pendiente')s.entrevista.estado='No aprobado';hist(s,'Selección no aprobada: '+m);notificar('aprobado','est:'+s.estudianteId,`Tu selección en ${(ESC(s.escenarioId)||{}).nombre} no fue aprobada. Motivo: ${m}`);log('Selección no aprobada',desc(s)+' · '+m);cerrarModal()})}
+function formLiberar(id){formMotivo('Liberar cupo',`Se anulará la selección de ${esc(desc(SOL(id)))} y el cupo quedará disponible. Quedará registrado en el historial.`,'Liberar cupo','doLiberar',id,true)}
+function doLiberar(id){act(()=>{const m=leer(['motivo']).motivo;if(!m)throw new Error('Escribe el motivo.');const s=SOL(id);s.estado='anulada';s.fechaConfirmacion=null;hist(s,'Cupo liberado por la coordinación: '+m);notificar(null,'est:'+s.estudianteId,`Tu asignación en ${(ESC(s.escenarioId)||{}).nombre} fue liberada por la coordinación. Motivo: ${m}`);log('Liberación de cupo',desc(s)+' · '+m);cerrarModal()})}
+function selEscLibres(excluir,pid){return escP().filter(e=>e.periodoId===pid&&e.id!==excluir&&!e.cerrado&&libres(e)>0).map(e=>[e.id,`${nombreEsc(e)} · ${e.area} · ${libres(e)} libres${e.requiereEntrevista?' · entrevista':''}`])}
+function formAsignar(estId){const sinEsc=estP().filter(e=>!solActiva(e.id)).sort((a,b)=>nombreCompleto(a).localeCompare(nombreCompleto(b)));const lib=selEscLibres('',per().id);
+ if(!lib.length){toast('No hay escenarios con cupos libres en este período.','err');return}
+ modal('Asignar escenario',`<p class="muted">Solo se listan escenarios con cupos libres. Si el escenario requiere entrevista, la asignación queda pendiente de entrevista.</p><div class="form">${fld('Estudiante','a_est',estId||'','select',{options:estId?[[estId,nombreCompleto(E(estId))]]:[['','Elige un estudiante sin escenario']].concat(sinEsc.map(e=>[e.id,nombreCompleto(e)+' · '+e.documento+(e.area1?' · '+e.area1:'')]))})}${fld('Escenario','a_esc','','select',{options:[['','Elige un escenario']].concat(lib)})}${fld('Docente supervisor (opcional)','a_doc','','select',{options:[['','El del escenario']].concat(S.docentes.map(d=>[d.id,d.nombre]))})}</div>`,{foot:`<button class="btn ghost" onclick="cerrarModal()">Cancelar</button><button class="btn pri" onclick="doAsignar()">Asignar</button>`})}
+function doAsignar(){act(()=>{const v=leer(['a_est','a_esc','a_doc']);if(!v.a_est||!v.a_esc)throw new Error('Elige el estudiante y el escenario.');const est=E(v.a_est),es=ESC(v.a_esc);const s=crearSolicitud(est,es,'Asignación realizada por la coordinación');s.docenteId=v.a_doc;if(!es.requiereEntrevista){s.estado='asignacion_provisional';hist(s,'Aprobada por la coordinación');postAprob(s)}else notificar('entrevista','est:'+est.id,'Este escenario requiere entrevista. La selección del escenario no garantiza la asignación.');log('Asignación por coordinación',desc(s));cerrarModal();toast('Asignación registrada')})}
+function formReasignar(id){const s=SOL(id);const lib=selEscLibres(s.escenarioId,s.periodoId);if(!lib.length){toast('No hay otros escenarios con cupos libres.','err');return}
+ modal('Reasignar · '+nombreCompleto(E(s.estudianteId)),`<p class="muted">Actual: ${esc(nombreEsc(ESC(s.escenarioId)))}. El cambio queda registrado y libera el cupo anterior.</p><div class="form">${fld('Nuevo escenario','r_esc','','select',{options:[['','Elige un escenario']].concat(lib),cls:'full'})}${fld('Motivo del cambio','motivo','','textarea',{cls:'full',req:1})}</div>`,{foot:`<button class="btn ghost" onclick="cerrarModal()">Cancelar</button><button class="btn pri" onclick="doReasignar('${id}')">Reasignar</button>`})}
+function doReasignar(id){act(()=>{const v=leer(['r_esc','motivo']);if(!v.r_esc||!v.motivo)throw new Error('Elige el escenario y escribe el motivo.');const s=SOL(id),est=E(s.estudianteId),nu=ESC(v.r_esc);if(nu.cerrado||libres(nu)<=0)throw new Error('CUPO COMPLETO en el nuevo escenario.');const ant=nombreEsc(ESC(s.escenarioId));s.estado='anulada';s.fechaConfirmacion=null;hist(s,`Reasignado a ${nombreEsc(nu)}: ${v.motivo}`);const n=crearSolicitud(est,nu,`Reasignación desde ${ant}: ${v.motivo}`);if(!nu.requiereEntrevista){n.estado='asignacion_provisional';postAprob(n)}log('Cambio de asignación',`${nombreCompleto(est)}: ${ant} → ${nombreEsc(nu)} · ${v.motivo}`);cerrarModal();toast('Reasignación registrada')})}
+function formDocente(id){const s=SOL(id),d=docenteDe(s);modal('Docente supervisor',`<p class="muted">${esc(desc(s))}</p>${fld('Docente','dsel',s.docenteId||'','select',{options:[['',`El del escenario (${(D(ESC(s.escenarioId).docenteId)||{}).nombre||'sin asignar'})`]].concat(S.docentes.map(x=>[x.id,x.nombre]))})}`,{foot:`<button class="btn ghost" onclick="cerrarModal()">Cancelar</button><button class="btn pri" onclick="doDocente('${id}')">Guardar</button>`})}
+function doDocente(id){act(()=>{const s=SOL(id);s.docenteId=leer(['dsel']).dsel;const d=docenteDe(s);hist(s,'Docente supervisor: '+(d?d.nombre:'sin asignar'));log('Cambio de docente',desc(s)+' → '+(d?d.nombre:'sin asignar'));cerrarModal()})}
+
+/* ---- matrícula financiera ---- */
+let selMat=new Set();
+function vMatricula(){F.mat=F.mat||{q:'',mat:'',con:'con'};const f=F.mat;curTabla=tablaMat;selMat=new Set();
+ return `<div class="alert info">${ic('info')}<div class="t">Ningún estudiante queda con escenario confirmado sin matrícula financiera vigente. Al marcar “Matriculado financieramente”, las asignaciones aprobadas se confirman automáticamente; si se retira, la confirmación se revierte.</div></div><div style="height:14px"></div>
+ <div class="filters"><input class="q" type="search" placeholder="Buscar estudiante" value="${esc(f.q)}" oninput="F.mat.q=this.value;tablaMat()" aria-label="Buscar"><select onchange="F.mat.mat=this.value;tablaMat()" aria-label="Estado"><option value="">Todos los estados</option>${Object.entries(MAT).map(([k,t])=>`<option value="${k}" ${f.mat===k?'selected':''}>${t}</option>`).join('')}</select><select onchange="F.mat.con=this.value;tablaMat()" aria-label="Escenario"><option value="con" ${f.con==='con'?'selected':''}>Con escenario aprobado</option><option value="" ${f.con===''?'selected':''}>Todos los estudiantes</option></select><span class="spacer"></span><button class="btn" onclick="importarMatricula()">${ic('up')} Cargar Excel de financiera</button></div><div id="tbl"></div>`}
+function listaMat(){const f=F.mat,q=norm(f.q);return estP().filter(e=>{const s=solActiva(e.id);if(f.con==='con'&&!(s&&ASIG.includes(s.estado)))return false;if(q&&!norm(nombreCompleto(e)+' '+e.documento+' '+e.codigo).includes(q))return false;if(f.mat&&e.matricula!==f.mat)return false;return true}).sort((a,b)=>nombreCompleto(a).localeCompare(nombreCompleto(b)))}
+function tablaMat(){const l=listaMat();
+ $('#tbl').innerHTML=`<div class="bulk"><span id="nsel">${selMat.size} seleccionados</span><select id="bulkmat" aria-label="Estado a aplicar">${Object.entries(MAT).map(([k,t])=>`<option value="${k}">${t}</option>`).join('')}</select><button class="btn sm pri" onclick="aplicarMat()">Aplicar a seleccionados</button></div><p class="count">${l.length} estudiantes</p>`+(l.length?`<div class="tbl"><table><thead><tr><th><input type="checkbox" aria-label="Seleccionar todos" onchange="document.querySelectorAll('.cm').forEach(c=>{c.checked=this.checked;this.checked?selMat.add(c.value):selMat.delete(c.value)});$('#nsel').textContent=selMat.size+' seleccionados'"></th><th>Estudiante</th><th>Código</th><th>Escenario</th><th>Estado de la asignación</th><th>Matrícula financiera</th><th>Actualizado</th></tr></thead><tbody>${l.map(e=>{const s=solActiva(e.id);return `<tr><td><input class="cm" type="checkbox" value="${e.id}" ${selMat.has(e.id)?'checked':''} aria-label="Seleccionar ${esc(nombreCompleto(e))}" onchange="this.checked?selMat.add(this.value):selMat.delete(this.value);$('#nsel').textContent=selMat.size+' seleccionados'"></td><td><b>${esc(nombreCompleto(e))}</b><span class="sub">${esc(e.documento)}</span></td><td>${esc(e.codigo||'—')}</td><td>${esc(nombreEsc(s&&ESC(s.escenarioId)))}</td><td>${chipSol(s)}</td><td><select onchange="setMatricula('${e.id}',this.value)" aria-label="Matrícula financiera" style="padding:5px 8px;border:1px solid var(--line);border-radius:7px;background:var(--surface)">${Object.entries(MAT).map(([k,t])=>`<option value="${k}" ${e.matricula===k?'selected':''}>${t}</option>`).join('')}</select></td><td class="small">${e.matriculaFecha?fDL(e.matriculaFecha):'—'}</td></tr>`}).join('')}</tbody></table></div>`:`<div class="card empty"><b>No hay estudiantes con estos filtros</b>Cambia el filtro a “Todos los estudiantes” para ver a quienes aún no tienen escenario.</div>`)}
+function aplicarMat(){if(!selMat.size){toast('Selecciona al menos un estudiante.','err');return}const v=$('#bulkmat').value;const ids=[...selMat];act(()=>{let n=0;ids.forEach(id=>{const e=E(id);if(e&&e.matricula!==v){e.matricula=v;e.matriculaFecha=ahora();if(v!=='matriculado'&&solActiva(id))notificar('matricula','est:'+id,'Tu matrícula financiera está pendiente.');n++}});log('Actualización masiva de matrícula',`${n} estudiantes → ${MAT[v]}`);toast(n+' estudiantes actualizados')})}
+
+/* ---- docentes ---- */
+function solsDocente(dId,pid){return S.solicitudes.filter(s=>s.periodoId===(pid||per().id)&&ASIG.includes(s.estado)&&(docenteDe(s)||{}).id===dId)}
+function vDocentes(){return `<div class="row" style="margin-bottom:14px"><span class="spacer"></span><button class="btn pri" onclick="formDoc()">${ic('plus')} Nuevo docente</button></div>`+(S.docentes.length?`<div class="tbl"><table><thead><tr><th>Docente</th><th>Documento</th><th>Contacto</th><th>Áreas</th><th>Estudiantes ${esc(per().codigo)}</th><th>Seguimientos</th><th></th></tr></thead><tbody>${S.docentes.map(d=>{const ss=solsDocente(d.id);return `<tr><td><b>${esc(d.nombre)}</b></td><td>${esc(d.documento)}</td><td class="small">${esc(d.email||'')}<span class="sub">${esc(d.telefono||'')}</span></td><td class="small">${esc(d.areas||'—')}</td><td>${ss.length}</td><td>${S.seguimientos.filter(g=>ss.some(s=>s.id===g.solicitudId)).length}</td><td><button class="btn sm" onclick="formDoc('${d.id}')">Editar</button></td></tr>`}).join('')}</tbody></table></div>`:`<div class="card empty"><b>Aún no hay docentes</b>Registra a los docentes supervisores para asociarlos a escenarios.</div>`)}
+function formDoc(id){const d=id?D(id):{};modal(id?'Editar docente':'Nuevo docente',`<div class="form">${fld('Nombre completo','dnombre',d.nombre,'text',{req:1,cls:'full'})}${fld('Documento (para ingresar)','ddoc',d.documento,'text',{req:1})}${fld('Correo','demail',d.email,'email')}${fld('Teléfono','dtel',d.telefono)}${fld('Áreas que supervisa','dareas',d.areas,'text',{ph:'Ej.: Clínica'})}</div>`,{foot:`${id&&!S.solicitudes.some(s=>s.docenteId===id)&&!S.escenarios.some(e=>e.docenteId===id)?`<button class="btn danger" onclick="act(()=>{const d=D('${id}');S.docentes=S.docentes.filter(x=>x.id!=='${id}');log('Eliminación de docente',d.nombre);cerrarModal()})">Eliminar</button><span class="spacer"></span>`:''}<button class="btn ghost" onclick="cerrarModal()">Cancelar</button><button class="btn pri" onclick="guardarDoc('${id||''}')">Guardar docente</button>`})}
+function guardarDoc(id){act(()=>{const v=leer(['dnombre','ddoc','demail','dtel','dareas']);v.ddoc=v.ddoc.replace(/\D/g,'');if(!v.dnombre||!v.ddoc)throw new Error('Nombre y documento son obligatorios.');if(S.docentes.some(d=>d.documento===v.ddoc&&d.id!==id))throw new Error('Ya existe un docente con ese documento.');const o={nombre:v.dnombre,documento:v.ddoc,email:v.demail,telefono:v.dtel,areas:v.dareas};if(id)Object.assign(D(id),o);else S.docentes.push(Object.assign({id:uid('d')},o));log(id?'Edición de docente':'Creación de docente',v.dnombre);cerrarModal()})}
+/* ---- supervisión (compartido admin/docente) ---- */
+function segsDe(solId){return S.seguimientos.filter(g=>g.solicitudId===solId).sort((a,b)=>(a.fecha+a.creado).localeCompare(b.fecha+b.creado))}
+function puedeVer(s){if(!sess)return false;if(sess.rol==='admin')return true;if(sess.rol==='doc')return(docenteDe(s)||{}).id===sess.id;return false}
+function fichaSeg(solId,escribir){const s=SOL(solId);if(!s||!puedeVer(s))return '<div class="card empty"><b>No tienes acceso a esta ficha</b></div>';const e=E(s.estudianteId),es=ESC(s.escenarioId),p=P(s.periodoId),d=docenteDe(s),gs=segsDe(solId);const ult=gs[gs.length-1];
+ return `<div class="card stack"><div class="row"><div style="flex:1;min-width:200px"><h3 style="margin:0">${esc(nombreCompleto(e))}</h3><p class="muted small" style="margin:2px 0 0">${esc(e.tipoDoc)} ${esc(e.documento)} · Código ${esc(e.codigo||'—')}</p></div>${chipSol(s)} ${chip(ult?ult.estadoProceso:'Sin iniciar',ult?(ult.estadoProceso==='Finalizado'?'ok':ult.estadoProceso.includes('alerta')||ult.estadoProceso==='Suspendido'?'bad':'info'):'')}</div>
+ <dl class="dl">${[['Escenario',nombreEsc(es)],['Área',es.area],['Período',p.codigo],['Fecha de inicio',fD(p.inicioPractica)],['Fecha de finalización',fD(p.fin)],['Docente supervisor',d?d.nombre:'—'],['Correo',e.email||'—'],['Teléfono',e.telefono||'—'],['Contacto del escenario',[es.contacto,es.telefono].filter(Boolean).join(' · ')||'—']].map(([k,v])=>`<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></div>
+ <div class="grid2" style="margin-top:18px"><div class="card"><h3>Línea de tiempo del seguimiento</h3>${gs.length?`<ul class="tl">${gs.map(g=>`<li><div class="d">${fD(g.fecha)} · ${esc(g.tipo)}</div>${g.descripcion?`<div class="tx">${esc(g.descripcion)}</div>`:''}${g.actividades?`<div class="tx"><b>Actividades:</b> ${esc(g.actividades)}</div>`:''}${g.compromisos?`<div class="tx"><b>Compromisos:</b> ${esc(g.compromisos)}</div>`:''}<div class="mt">Estado: ${esc(g.estadoProceso)} · Registrado ${fDH(g.creado)} por ${esc(g.autor||'')}</div></li>`).join('')}</ul>`:'<p class="muted">Aún no hay seguimientos registrados.</p>'}<div class="row" style="margin-top:6px"><button class="btn sm" onclick="run(()=>pdfSeguimiento('${solId}'))">${ic('down')} Descargar ficha PDF</button></div></div>
+ ${escribir?`<div class="card"><h3>Nueva entrada</h3><div class="form">${fld('Fecha','g_fecha',hoyISO(),'date')}${fld('Tipo','g_tipo','Seguimiento','select',{options:TIPOS_SEG})}${fld('Observaciones','g_desc','','textarea',{cls:'full',rows:3})}${fld('Actividades','g_act','','textarea',{cls:'full',rows:2})}${fld('Compromisos','g_comp','','textarea',{cls:'full',rows:2})}${fld('Estado del proceso','g_estado',ult?ult.estadoProceso:'En curso','select',{options:EST_PROC})}</div><p class="small muted" style="margin-top:10px">${ic('lock')} Las entradas registradas no se pueden modificar ni borrar.</p><button class="btn pri" onclick="guardarSeg('${solId}')">Registrar entrada</button></div>`:''}</div>`}
+function guardarSeg(solId){act(()=>{const s=SOL(solId);if(!puedeVer(s))throw new Error('No tienes acceso a este estudiante.');const v=leer(['g_fecha','g_tipo','g_desc','g_act','g_comp','g_estado']);if(!v.g_fecha)throw new Error('Indica la fecha.');if(!v.g_desc&&!v.g_act&&!v.g_comp)throw new Error('Escribe al menos una observación, actividad o compromiso.');
+ S.seguimientos.push({id:uid('g'),solicitudId:solId,estudianteId:s.estudianteId,docenteId:(docenteDe(s)||{}).id||'',autor:quien(),fecha:v.g_fecha,tipo:v.g_tipo,descripcion:v.g_desc,actividades:v.g_act,compromisos:v.g_comp,estadoProceso:v.g_estado,creado:ahora()});log('Registro de seguimiento',desc(s)+' · '+v.g_tipo);toast('Entrada registrada')})}
+async function pdfSeguimiento(solId){const s=SOL(solId);if(!puedeVer(s))throw new Error('Sin acceso.');const e=E(s.estudianteId),es=ESC(s.escenarioId),p=P(s.periodoId),d=docenteDe(s);const doc=nuevoPDF('portrait');let y=encPDF(doc,'Ficha de seguimiento de práctica',`${nombreCompleto(e)} · ${e.tipoDoc} ${e.documento} · ${nombreEsc(es)} (${es.area}) · Período ${p.codigo} · Docente: ${d?d.nombre:'-'} · Del ${fD(p.inicioPractica)} al ${fD(p.fin)}`);y=tablaPDF(doc,['Fecha','Tipo','Observaciones','Actividades','Compromisos','Estado'],segsDe(solId).map(g=>[fD(g.fecha),g.tipo,g.descripcion,g.actividades,g.compromisos,g.estadoProceso]),y+4,{columnStyles:{2:{cellWidth:55}}});await guardarPDF(doc,`seguimiento-${e.documento}-${p.codigo}.pdf`)}
+let supSel=null;
+function vSupervision(){const esAdm=sess.rol==='admin';const l=solP().filter(s=>ASIG.includes(s.estado)&&(esAdm||(docenteDe(s)||{}).id===sess.id));F.sup=F.sup||{q:'',doc:''};const q=norm(F.sup.q);
+ const lf=l.filter(s=>{const e=E(s.estudianteId);if(q&&!norm(nombreCompleto(e)+' '+e.documento).includes(q))return false;if(esAdm&&F.sup.doc&&(docenteDe(s)||{}).id!==F.sup.doc)return false;return true}).sort((a,b)=>nombreCompleto(E(a.estudianteId)).localeCompare(nombreCompleto(E(b.estudianteId))));
+ if(!lf.find(s=>s.id===supSel))supSel=lf[0]?lf[0].id:null;
+ if(!l.length)return `<div class="card empty"><b>${esAdm?'No hay estudiantes asignados en este período':'Aún no tienes estudiantes asignados en '+esc(per().codigo)}</b>Los estudiantes aparecen aquí cuando su escenario está aprobado o confirmado.</div>`;
+ return `<div class="split"><div><div class="filters" style="margin-bottom:10px"><input class="q" type="search" placeholder="Buscar estudiante" value="${esc(F.sup.q)}" onchange="F.sup.q=this.value;render()" aria-label="Buscar">${esAdm?`<select onchange="F.sup.doc=this.value;render()" aria-label="Docente"><option value="">Todos los docentes</option>${S.docentes.map(d=>`<option value="${d.id}" ${F.sup.doc===d.id?'selected':''}>${esc(d.nombre)}</option>`).join('')}</select>`:''}</div><div class="plist">${lf.map(s=>{const e=E(s.estudianteId),n=segsDe(s.id).length;return `<button class="pitem ${s.id===supSel?'on':''}" onclick="supSel='${s.id}';render()"><b>${esc(nombreCompleto(e))}</b><span>${esc(nombreEsc(ESC(s.escenarioId)))} · ${n} seguimiento${n===1?'':'s'}</span></button>`}).join('')}</div></div><div>${supSel?fichaSeg(supSel,true):'<div class="card empty"><b>Sin resultados</b></div>'}</div></div>`}
+
+/* ---- cartas aval ---- */
+function datosCarta(s){const e=E(s.estudianteId),es=ESC(s.escenarioId),p=P(s.periodoId),c=S.config;return{fecha:new Date().toLocaleDateString('es-CO',{day:'numeric',month:'long',year:'numeric'}),ciudad:c.ciudad,institucion:c.institucion,programa:c.programa,estudiante:nombreCompleto(e),tipo_documento:e.tipoDoc,documento:e.documento,codigo:e.codigo||'—',empresa:es.nombre,contacto:es.contacto||'Gestión Humana',ciudad_empresa:es.ciudad||c.ciudad,cargo:es.cargo||'practicante de Psicología',area:es.area,periodo:p.codigo,responsable:c.responsable,cargo_responsable:c.cargoResponsable}}
+const llenar=(tpl,d)=>tpl.replace(/\{\{(\w+)\}\}/g,(m,k)=>d[k]!=null?d[k]:m);
+function elegibleCarta(s){return s&&s.estado==='confirmada'&&esCarta(s)}
+async function pdfCarta(datos,codigo,plantilla){const doc=nuevoPDF('portrait');const w=doc.internal.pageSize.getWidth();doc.setFillColor(30,78,156);doc.rect(0,0,w,5,'F');doc.setFont('times','bold');doc.setFontSize(14);doc.setTextColor(24,35,58);doc.text(pt(datos.institucion),w/2,20,{align:'center'});doc.setFont('times','normal');doc.setFontSize(10);doc.setTextColor(90,100,121);doc.text(pt('Coordinación de Prácticas Institucionales · Programa de '+datos.programa),w/2,26,{align:'center'});doc.setDrawColor(200,150,46);doc.setLineWidth(.6);doc.line(25,30,w-25,30);doc.setFontSize(9);doc.text(pt('Consecutivo: '+codigo),w-25,37,{align:'right'});
+ doc.setFont('times','normal');doc.setFontSize(11.5);doc.setTextColor(24,35,58);let y=48;const lines=doc.splitTextToSize(pt(llenar(plantilla||S.config.plantilla,datos)),w-50);lines.forEach(l=>{if(y>255){doc.addPage();y=25}doc.text(l,25,y);y+=5.6});y+=22;if(y>250){doc.addPage();y=40}doc.setDrawColor(24,35,58);doc.setLineWidth(.3);doc.line(25,y,95,y);doc.setFont('times','bold');doc.text(pt(datos.responsable),25,y+6);doc.setFont('times','normal');doc.text(pt(datos.cargo_responsable),25,y+11.5);doc.text(pt(datos.institucion),25,y+17);
+ await saveFile(`carta-aval-${datos.documento}-${datos.periodo}.pdf`,doc.output('blob'))}
+function generarCarta(solId){const s=SOL(solId);if(!elegibleCarta(s)){toast('La Carta Aval se habilita cuando el escenario organizacional está confirmado.','err');return}if(sess.rol==='est'&&s.estudianteId!==sess.id)return;
+ const datos=datosCarta(s);const n=S.cartas.filter(c=>(SOL(c.solicitudId)||{}).periodoId===s.periodoId).length+1;const codigo=`CA-${P(s.periodoId).codigo}-${String(n).padStart(4,'0')}`;
+ S.cartas.push({id:uid('c'),codigo,solicitudId:solId,estudianteId:s.estudianteId,fecha:ahora(),generadoPor:quien(),datos,plantilla:S.config.plantilla});log('Generación de Carta Aval',codigo+' · '+desc(s));guardar();render();run(()=>pdfCarta(datos,codigo,S.config.plantilla))}
+function descargarCarta(id){const c=S.cartas.find(x=>x.id===id);if(!c)return;const s=SOL(c.solicitudId);if(sess.rol==='est'&&c.estudianteId!==sess.id)return;run(()=>pdfCarta(c.datos||datosCarta(s),c.codigo,c.plantilla||S.config.plantilla))}
+function vCartas(){const eleg=solP().filter(elegibleCarta);const hist=S.cartas.filter(c=>(SOL(c.solicitudId)||{}).periodoId===per().id).sort((a,b)=>b.fecha.localeCompare(a.fecha));const tab=F.cartTab||'pend';
+ return `<div class="tabs"><button class="tab ${tab==='pend'?'on':''}" onclick="F.cartTab='pend';render()">Estudiantes habilitados (${eleg.length})</button><button class="tab ${tab==='hist'?'on':''}" onclick="F.cartTab='hist';render()">Historial (${hist.length})</button><button class="tab ${tab==='tpl'?'on':''}" onclick="F.cartTab='tpl';render()">Plantilla institucional</button></div>`+
+ (tab==='pend'?(eleg.length?`<div class="tbl"><table><thead><tr><th>Estudiante</th><th>Empresa / cargo</th><th>Confirmado</th><th>Cartas</th><th></th></tr></thead><tbody>${eleg.map(s=>{const e=E(s.estudianteId),es=ESC(s.escenarioId),n=S.cartas.filter(c=>c.solicitudId===s.id).length;return `<tr><td><b>${esc(nombreCompleto(e))}</b><span class="sub">${esc(e.documento)}</span></td><td>${esc(es.nombre)}<span class="sub">${esc(es.cargo||es.area)}</span></td><td class="small">${fDL(s.fechaConfirmacion)}</td><td>${n?chip(n+' generada'+(n>1?'s':''),'ok'):chip('Sin generar','warn')}</td><td><button class="btn sm pri" onclick="generarCarta('${s.id}')">${n?'Generar de nuevo':'Generar Carta Aval'}</button></td></tr>`}).join('')}</tbody></table></div>`:`<div class="card empty"><b>Aún no hay estudiantes habilitados</b>La Carta Aval se habilita para estudiantes de ${esc(S.config.cartaAreas.join(', '))} con escenario confirmado (selección aprobada, entrevista aprobada si aplica y matrícula financiera vigente).</div>`)
+ :tab==='hist'?(hist.length?`<div class="tbl"><table><thead><tr><th>Consecutivo</th><th>Estudiante</th><th>Empresa</th><th>Fecha</th><th>Generada por</th><th></th></tr></thead><tbody>${hist.map(c=>{const e=E(c.estudianteId),s=SOL(c.solicitudId);return `<tr><td><b>${esc(c.codigo)}</b></td><td>${esc(nombreCompleto(e))}</td><td>${esc(nombreEsc(s&&ESC(s.escenarioId)))}</td><td class="small">${fDH(c.fecha)}</td><td class="small">${esc(c.generadoPor)}</td><td><button class="btn sm" onclick="descargarCarta('${c.id}')">${ic('down')} PDF</button></td></tr>`}).join('')}</tbody></table></div>`:`<div class="card empty"><b>No se han generado cartas en este período</b></div>`)
+ :`<div class="grid2"><div class="card stack"><div class="form">${fld('Responsable que firma','c_resp',S.config.responsable)}${fld('Cargo del responsable','c_cargo',S.config.cargoResponsable)}${fld('Ciudad de expedición','c_ciudad',S.config.ciudad)}${fld('Áreas que reciben Carta Aval','c_areas',S.config.cartaAreas.join(', '),'text',{help:'Separadas por coma'})}${fld('Texto de la carta','c_tpl',S.config.plantilla,'textarea',{cls:'full',rows:16})}</div><p class="small muted">Campos disponibles: ${['fecha','ciudad','institucion','programa','estudiante','tipo_documento','documento','codigo','empresa','contacto','ciudad_empresa','cargo','area','periodo'].map(k=>`<span class="code">{{${k}}}</span>`).join(' ')}</p><div class="row"><button class="btn pri" onclick="guardarPlantilla()">Guardar plantilla</button><button class="btn" onclick="previewCarta()">Vista previa en PDF</button><button class="btn ghost" onclick="document.getElementById('f_c_tpl').value=PLANTILLA">Restaurar texto original</button></div></div><div class="card"><h3>Vista previa</h3><div class="letter">${esc(llenar(S.config.plantilla,ejemploCarta()))}</div></div></div>`)}
+function ejemploCarta(){const s=solP().find(elegibleCarta)||solP().find(x=>ASIG.includes(x.estado));return s?datosCarta(s):{fecha:new Date().toLocaleDateString('es-CO',{day:'numeric',month:'long',year:'numeric'}),ciudad:S.config.ciudad,institucion:S.config.institucion,programa:S.config.programa,estudiante:'Nombre del estudiante',tipo_documento:'Cédula',documento:'0000000000',codigo:'00000000',empresa:'Empresa',contacto:'Contacto',ciudad_empresa:'Ciudad',cargo:'Cargo',area:'Organizacional',periodo:per().codigo}}
+function guardarPlantilla(){act(()=>{const v=leer(['c_resp','c_cargo','c_ciudad','c_areas','c_tpl']);S.config.responsable=v.c_resp;S.config.cargoResponsable=v.c_cargo;S.config.ciudad=v.c_ciudad;S.config.cartaAreas=v.c_areas.split(',').map(x=>mapArea(x)).filter(Boolean);S.config.plantilla=v.c_tpl||PLANTILLA;log('Edición de plantilla de Carta Aval','');toast('Plantilla guardada')})}
+function previewCarta(){const tpl=(document.getElementById('f_c_tpl')||{}).value||S.config.plantilla;const d=Object.assign(ejemploCarta(),{responsable:(document.getElementById('f_c_resp')||{}).value||S.config.responsable,cargo_responsable:(document.getElementById('f_c_cargo')||{}).value||S.config.cargoResponsable});run(()=>pdfCarta(d,'VISTA-PREVIA',tpl))}
+/* ---- reportes ---- */
+function filasR1(escId,prov){return solP().filter(s=>s.escenarioId===escId&&(s.estado==='confirmada'||(prov&&s.estado==='asignacion_provisional'))).map(s=>{const e=E(s.estudianteId),d=docenteDe(s);return [nombreCompleto(e),e.tipoDoc+' '+e.documento,e.codigo||'',e.email||'',e.telefono||'',d?d.nombre:'',textoSol(s)]}).sort((a,b)=>a[0].localeCompare(b[0]))}
+const H1=['Estudiante','Documento','Código','Correo','Teléfono','Docente supervisor','Estado de la asignación'];
+async function reporte1(fmt){const id=$('#f_r1esc').value,prov=$('#f_r1prov').checked;const escs=(id?[ESC(id)]:escP()).filter(e=>filasR1(e.id,prov).length||id);if(!escs.length)throw new Error('Ningún escenario tiene estudiantes confirmados en este período.');const p=per();
+ if(fmt==='pdf'){const doc=nuevoPDF('landscape');escs.forEach((e,i)=>{if(i)doc.addPage();const d=D(e.docenteId);let y=encPDF(doc,'Relación oficial de estudiantes en práctica',`Escenario: ${nombreEsc(e)} · Área: ${e.area} · Período académico ${p.codigo} · Cupos: ${e.cupos} · Docente supervisor: ${d?d.nombre:'-'}${prov?' · Incluye asignaciones provisionales':''}`);tablaPDF(doc,H1,filasR1(e.id,prov),y+4)});await guardarPDF(doc,`reporte-escenarios-${p.codigo}.pdf`)}
+ else await xlsxLibro(escs.map(e=>({nombre:e.nombre,filas:[['Escenario',nombreEsc(e)],['Área',e.area],['Período académico',p.codigo],['Cupos',e.cupos],[],H1].concat(filasR1(e.id,prov))})),`reporte-escenarios-${p.codigo}.xlsx`);
+ log('Reporte por escenario',`${escs.length} escenarios · ${fmt.toUpperCase()}`);guardar()}
+function datosR2(){const listos=[],pend=[];estP().forEach(e=>{const s=solActiva(e.id);if(s&&s.estado==='confirmada'&&e.matricula==='matriculado')listos.push([nombreCompleto(e),e.tipoDoc+' '+e.documento,e.codigo||'',per().codigo,ESC(s.escenarioId).area,nombreEsc(ESC(s.escenarioId)),'Confirmado · '+fDL(s.fechaConfirmacion)]);else pend.push([nombreCompleto(e),e.tipoDoc+' '+e.documento,e.codigo||'',s?nombreEsc(ESC(s.escenarioId)):'—',pendientesDe(e).join('; ')])});const o=(a,b)=>a[0].localeCompare(b[0]);return{listos:listos.sort(o),pend:pend.sort(o)}}
+const H2=['Nombre','Documento','Código estudiantil','Período','Área de práctica','Escenario','Estado de asignación'],H2P=['Nombre','Documento','Código estudiantil','Escenario','Condiciones pendientes'];
+async function reporte2(fmt){const {listos,pend}=datosR2();const p=per();
+ if(fmt==='pdf'){const doc=nuevoPDF('landscape');let y=encPDF(doc,'Estudiantes habilitados para matrícula académica',`Período ${p.codigo} · ${listos.length} estudiantes con escenario confirmado y matrícula financiera vigente`);y=tablaPDF(doc,H2,listos,y+4);doc.addPage();y=encPDF(doc,'Estudiantes con condiciones pendientes',`Período ${p.codigo} · ${pend.length} estudiantes. No deben pasar a matrícula académica hasta cumplir las condiciones.`);tablaPDF(doc,H2P,pend,y+4,{headStyles:{fillColor:[176,53,45],textColor:255}});await guardarPDF(doc,`matricula-academica-${p.codigo}.pdf`)}
+ else await xlsxLibro([{nombre:'Habilitados',filas:[H2].concat(listos)},{nombre:'Con pendientes',filas:[H2P].concat(pend)}],`matricula-academica-${p.codigo}.xlsx`);
+ log('Reporte para el Programa',`${listos.length} habilitados · ${fmt.toUpperCase()}`);guardar()}
+function filasR3(dId){return solsDocente(dId).map(s=>{const e=E(s.estudianteId),es=ESC(s.escenarioId),g=segsDe(s.id);return [nombreCompleto(e),e.documento,nombreEsc(es),es.area,per().codigo,textoSol(s),[e.email,e.telefono].filter(Boolean).join(' · '),g.length+' registro(s)'+(g.length?' · último '+fD(g[g.length-1].fecha):'')]}).sort((a,b)=>a[0].localeCompare(b[0]))}
+const H3=['Estudiante','Documento','Escenario','Área','Período','Estado','Contacto','Seguimiento'];
+async function reporte3(fmt,dIdFijo){const id=dIdFijo||$('#f_r3doc').value;const ds=id?[D(id)]:S.docentes;const p=per();
+ if(fmt==='pdf'){const doc=nuevoPDF('landscape');ds.forEach((d,i)=>{if(i)doc.addPage();let y=encPDF(doc,'Estudiantes asignados al docente supervisor',`${d.nombre} · Período ${p.codigo}`);tablaPDF(doc,H3,filasR3(d.id),y+4)});await guardarPDF(doc,`estudiantes-docente-${p.codigo}.pdf`)}
+ else await xlsxLibro(ds.map(d=>({nombre:d.nombre,filas:[['Docente',d.nombre],['Período',p.codigo],[],H3].concat(filasR3(d.id))})),`estudiantes-docente-${p.codigo}.xlsx`);
+ log('Reporte por docente',`${ds.length} docente(s) · ${fmt.toUpperCase()}`);guardar()}
+function vReportes(){const {listos,pend}=datosR2();const conf=solP().filter(s=>s.estado==='confirmada').length;
+ return `<div class="alert info">${ic('info')}<div class="t">Los reportes oficiales usan solo información validada: asignaciones confirmadas (selección aprobada, entrevista aprobada si aplica y matrícula financiera vigente). Período ${esc(per().codigo)}.</div></div><div style="height:16px"></div><div class="grid2">
+ <div class="card stack"><h3>Reporte por escenario de práctica</h3><p class="muted small">Relación oficial para enviar a cada escenario. Una hoja o página por escenario. ${conf} estudiantes confirmados.</p><div class="form">${fld('Escenario','r1esc','','select',{options:[['','Todos los escenarios con estudiantes']].concat(escP().map(e=>[e.id,nombreEsc(e)+' ('+filasR1(e.id,false).length+')']))})}</div>${fld('Incluir asignaciones provisionales (borrador, no oficial)','r1prov',false,'check')}<div class="row"><button class="btn pri" onclick="run(()=>reporte1('pdf'))">${ic('down')} PDF</button><button class="btn" onclick="run(()=>reporte1('xlsx'))">${ic('down')} Excel</button></div></div>
+ <div class="card stack"><h3>Reporte para el Programa de Psicología</h3><p class="muted small">Estudiantes que pueden pasar a matrícula académica, y por separado quienes tienen condiciones pendientes.</p><div class="row">${chip(listos.length+' habilitados','ok')} ${chip(pend.length+' con pendientes','warn')}</div><div class="row"><button class="btn pri" onclick="run(()=>reporte2('pdf'))">${ic('down')} PDF</button><button class="btn" onclick="run(()=>reporte2('xlsx'))">${ic('down')} Excel</button></div></div>
+ <div class="card stack"><h3>Reporte por docente supervisor</h3><p class="muted small">Estudiantes asignados a cada docente con su estado y seguimiento.</p><div class="form">${fld('Docente','r3doc','','select',{options:[['','Todos los docentes']].concat(S.docentes.map(d=>[d.id,d.nombre+' ('+solsDocente(d.id).length+')']))})}</div><div class="row"><button class="btn pri" onclick="run(()=>reporte3('pdf'))">${ic('down')} PDF</button><button class="btn" onclick="run(()=>reporte3('xlsx'))">${ic('down')} Excel</button></div></div>
+ <div class="card stack"><h3>Consolidado general</h3><p class="muted small">Todos los estudiantes del período con escenario, estado, matrícula y etapa actual. Útil como respaldo de trabajo.</p><div class="row"><button class="btn" onclick="F.est={q:'',area:'',esc:'',estado:'',doc:'',mat:''};exportarEst()">${ic('down')} Excel</button></div></div></div>`}
+
+/* ---- configuración ---- */
+function vConfig(){const c=S.config;const tab=F.cfgTab||'gen';
+ return `<div class="tabs">${[['gen','General'],['notif','Notificaciones'],['datos','Datos y respaldo'],['audit','Registro de cambios']].map(([k,t])=>`<button class="tab ${tab===k?'on':''}" onclick="F.cfgTab='${k}';render()">${t}</button>`).join('')}</div>`+
+ (tab==='gen'?`<div class="grid2"><div class="card stack"><h3>Institución</h3><div class="form">${fld('Institución','cf_inst',c.institucion,'text',{cls:'full'})}${fld('Programa','cf_prog',c.programa)}${fld('Días de aviso antes del cierre','cf_dias',c.diasAviso,'number',{min:1})}</div><h3 style="margin-top:8px">Acceso</h3><div class="form">${fld('Clave de coordinación','cf_ca',c.claveAdmin)}${fld('Clave del Programa','cf_cp',c.claveProg)}</div><button class="btn pri" onclick="guardarCfg()">Guardar cambios</button></div>
+ <div class="card stack"><h3>Áreas de práctica</h3><p class="muted small">Las áreas nuevas quedan disponibles para escenarios, filtros y reportes.</p><div class="row">${c.areas.map(a=>`<span class="chip" style="background:color-mix(in srgb,${areaCol(a)} 14%,transparent);color:${areaCol(a)}">${esc(a)} ${S.escenarios.some(e=>e.area===a)?'':`<button class="btn ghost sm" style="padding:0 4px" aria-label="Quitar ${esc(a)}" onclick="act(()=>{S.config.areas=S.config.areas.filter(x=>x!==${esc(JSON.stringify(a))});log('Área eliminada',${esc(JSON.stringify(a))})})">×</button>`}</span>`).join('')}</div><div class="row"><input id="nuevaArea" placeholder="Nueva área, ej.: Jurídica" style="padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);flex:1"><button class="btn" onclick="agregarArea()">Agregar área</button></div></div></div>`
+ :tab==='notif'?`<div class="card stack" style="max-width:640px"><h3>Avisos a estudiantes</h3><p class="muted small">Elige qué avisos genera la plataforma automáticamente.</p>${Object.entries(NOTIF_TIPOS).map(([k,t])=>fld(t,'nt_'+k,c.notif[k]!==false,'check')).join('')}<button class="btn pri" onclick="act(()=>{Object.keys(NOTIF_TIPOS).forEach(k=>S.config.notif[k]=document.getElementById('f_nt_'+k).checked);log('Configuración de notificaciones','');toast('Notificaciones guardadas')})">Guardar notificaciones</button><hr style="border:0;border-top:1px solid var(--line);width:100%"><h3>Aviso general</h3>${fld('Mensaje para todos los estudiantes del período '+per().codigo,'aviso','','textarea')}<button class="btn" onclick="enviarAviso()">Enviar aviso</button></div>`
+ :tab==='datos'?`<div class="grid2"><div class="card stack"><h3>Respaldo</h3><p class="muted small">Esta versión guarda la información en este navegador. Descarga un respaldo con frecuencia y restáuralo para continuar en otro equipo.</p><div class="row"><button class="btn pri" onclick="respaldo()">${ic('down')} Descargar respaldo</button><button class="btn" onclick="restaurar()">${ic('up')} Restaurar respaldo</button></div></div>
+ <div class="card stack"><h3>Comenzar con datos reales</h3><p class="muted small">Borra estudiantes, escenarios, asignaciones y seguimientos de demostración. Conserva configuración, plantilla, áreas y docentes si lo eliges.</p>${fld('Conservar docentes','keepdoc',false,'check')}<div class="row"><button class="btn danger" onclick="confirmar('Borrar datos','<p>Se eliminarán los datos operativos. Descarga un respaldo antes si lo necesitas.</p>',limpiar,'Borrar datos',true)">Borrar datos operativos</button><button class="btn ghost" onclick="confirmar('Restaurar demostración','<p>Se reemplazará toda la información por los datos ficticios de demostración.</p>',()=>{S=seed();guardar();sess={rol:'admin'};render();toast('Datos de demostración restaurados')},'Restaurar',true)">Restaurar demostración</button></div></div>
+ <div class="card stack"><h3>Sobre esta versión</h3><p class="small muted">Prototipo funcional completo: todas las reglas de negocio están implementadas. Para que 300+ estudiantes y los docentes entren desde sus propios dispositivos con la misma información, el siguiente paso es conectar una base de datos en línea y el inicio de sesión institucional. Las claves y el ingreso por documento de esta versión son de demostración y no constituyen seguridad real.</p></div></div>`
+ :vAudit())}
+function vAudit(){F.aud=F.aud||'';const q=norm(F.aud);const l=S.audit.filter(a=>!q||norm(a.accion+' '+a.detalle+' '+a.usuario).includes(q)).slice(0,300);return `<div class="filters"><input class="q" type="search" placeholder="Buscar en el registro" value="${esc(F.aud)}" onchange="F.aud=this.value;render()" aria-label="Buscar"><button class="btn" onclick="run(()=>xlsxLibro([{nombre:'Registro',filas:[['Fecha','Hora','Usuario','Acción','Detalle']].concat(S.audit.map(a=>[fDL(a.fecha),new Date(a.fecha).toLocaleTimeString('es-CO'),a.usuario,a.accion,a.detalle]))}],'registro-cambios.xlsx'))">${ic('down')} Exportar</button></div><p class="count">Mostrando ${l.length} de ${S.audit.length} registros</p><div class="tbl"><table><thead><tr><th>Fecha y hora</th><th>Usuario</th><th>Acción</th><th>Detalle</th></tr></thead><tbody>${l.map(a=>`<tr><td class="small" style="white-space:nowrap">${fDH(a.fecha)}</td><td class="small">${esc(a.usuario)}</td><td><b>${esc(a.accion)}</b></td><td class="small">${esc(a.detalle)}</td></tr>`).join('')}</tbody></table></div>`}
+function guardarCfg(){act(()=>{const v=leer(['cf_inst','cf_prog','cf_dias','cf_ca','cf_cp']);if(!v.cf_ca||!v.cf_cp)throw new Error('Las claves no pueden quedar vacías.');Object.assign(S.config,{institucion:v.cf_inst,programa:v.cf_prog,diasAviso:parseInt(v.cf_dias)||7,claveAdmin:v.cf_ca,claveProg:v.cf_cp});log('Configuración general','');toast('Configuración guardada')})}
+function agregarArea(){const a=($('#nuevaArea').value||'').trim();if(!a)return;act(()=>{if(S.config.areas.some(x=>norm(x)===norm(a)))throw new Error('Esa área ya existe.');S.config.areas.push(a);log('Área agregada',a)})}
+function enviarAviso(){const m=leer(['aviso']).aviso;if(!m){toast('Escribe el mensaje.','err');return}act(()=>{estP().forEach(e=>notificar(null,'est:'+e.id,m));log('Aviso general',`${estP().length} estudiantes · ${m}`);toast('Aviso enviado a '+estP().length+' estudiantes')})}
+function respaldo(){run(()=>saveFile(`respaldo-practicas-${hoyISO()}.json`,new Blob([JSON.stringify(S)],{type:'application/json'})))}
+function restaurar(){elegirArchivo('.json',async f=>{const d=JSON.parse(await f.text());if(!d||!Array.isArray(d.periodos)||!Array.isArray(d.estudiantes))throw new Error('El archivo no es un respaldo válido de esta plataforma.');S=d;migrar();log('Restauración de respaldo',f.name);guardar();render();toast('Respaldo restaurado')})}
+function limpiar(){act(()=>{const kd=(document.getElementById('f_keepdoc')||{}).checked;S.estudiantes=[];S.escenarios=[];S.solicitudes=[];S.seguimientos=[];S.cartas=[];S.notifs=[];if(!kd)S.docentes=[];log('Borrado de datos operativos',kd?'Se conservaron los docentes':'');toast('Datos borrados. Importa tus estudiantes y escenarios.')})}
+
+/* ---- programa de psicología ---- */
+function vPrograma(){const {listos,pend}=datosR2();const t=F.progTab||'ok';
+ return `<div class="stack"><div class="hero"><div><h2>Período ${esc(per().codigo)}</h2><p class="muted">Solo aparecen como habilitados quienes tienen escenario confirmado y matrícula financiera vigente.</p></div><div class="row"><button class="btn pri" onclick="run(()=>reporte2('pdf'))">${ic('down')} PDF</button><button class="btn" onclick="run(()=>reporte2('xlsx'))">${ic('down')} Excel</button></div></div>
+ <div class="kpis">${kpi(listos.length,'Habilitados para matrícula académica','ok')}${kpi(pend.length,'Con condiciones pendientes','warn')}</div>
+ <div><div class="tabs"><button class="tab ${t==='ok'?'on':''}" onclick="F.progTab='ok';render()">Habilitados (${listos.length})</button><button class="tab ${t==='p'?'on':''}" onclick="F.progTab='p';render()">Con pendientes (${pend.length})</button></div>
+ <div class="tbl"><table><thead><tr>${(t==='ok'?H2:H2P).map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${(t==='ok'?listos:pend).map(r=>`<tr>${r.map((c,i)=>`<td class="${i===0?'':'small'}">${i===0?'<b>'+esc(c)+'</b>':esc(c)}</td>`).join('')}</tr>`).join('')||`<tr><td colspan="7" class="empty">Sin estudiantes en esta lista.</td></tr>`}</tbody></table></div></div></div>`}
+
+/* ---- calendario (compartido) ---- */
+function vCalendario(p){p=p||(sess.rol==='est'?perDe(E(sess.id)):per());const h=hoyISO();const items=[['Apertura de selección',p.aperturaSel],['Cierre de selección',p.cierreSel],['Inicio de entrevistas',p.entrevistasIni],['Fin de entrevistas',p.entrevistasFin],['Inicio de matrícula financiera',p.matriculaIni],['Cierre de matrícula financiera',p.matriculaFin],['Confirmación de escenarios',p.confirmacion],['Inicio del período',p.inicio],['Inicio de práctica',p.inicioPractica],['Fin del período',p.fin]].filter(x=>x[1]).sort((a,b)=>a[1].localeCompare(b[1]));const nx=items.findIndex(x=>x[1]>=h);
+ return `<div class="card" style="max-width:720px"><h3>Calendario ${esc(p.codigo)}</h3><ul class="cal">${items.map((x,i)=>`<li class="${x[1]<h?'past':i===nx?'next':''}"><span class="f">${fD(x[1])}</span><span>${esc(x[0])}${i===nx?' '+chip('Próxima fecha','acc'):''}</span></li>`).join('')}</ul></div>`}
+/* ================= ESTUDIANTE ================= */
+const yo=()=>E(sess.id);
+function vEstInicio(){const e=yo(),p=perDe(e),s=solActiva(e.id),es=s&&ESC(s.escenarioId),d=docenteDe(s);const st=etapas(e);const ci=st.findIndex(x=>!x.done&&!x.skip);const k=ci<0?'Proceso al día':st[ci].k;
+ const ult=S.solicitudes.filter(x=>x.estudianteId===e.id).sort((a,b)=>b.fecha.localeCompare(a.fecha))[0];
+ const abierto=selAbierta(p)||e.cambioHabilitado;
+ const info={
+  'Consulta de escenarios':[abierto?'Revisa los escenarios disponibles y elige el que mejor se ajuste a tu perfil y horario.':'El período de selección no está abierto. Consulta el calendario.',abierto?`<button class="btn pri" onclick="go('escenarios')">Ver escenarios</button>`:''],
+  'Selección / postulación':[ult&&ult.estado==='no_aprobada'?'Tu selección anterior no fue aprobada. Puedes elegir otro escenario con cupos disponibles.':'Elige un escenario o postúlate a una vacante organizacional.',abierto?`<button class="btn pri" onclick="go('escenarios')">Ver escenarios</button>`:''],
+  'Entrevista':['Este escenario requiere proceso de entrevista. La selección del escenario no garantiza la asignación.',`<button class="btn" onclick="go('postulaciones')">Ver detalle</button>`],
+  'Validación':['La coordinación está revisando tu selección. Te avisaremos cuando sea aprobada.',''],
+  'Matrícula financiera':['Tu escenario fue aprobado. Completa tu matrícula financiera para que quede en firme.',`<button class="btn" onclick="go('matricula')">Ver estado</button>`],
+  'Asignación confirmada':['Tu selección aún no está aprobada.',''],
+  'Carta Aval':['Tu escenario está confirmado y tu Carta Aval está disponible.',`<button class="btn pri" onclick="go('carta')">Descargar Carta Aval</button>`],
+  'Inicio de práctica':[`Tu escenario está confirmado. La práctica inicia el ${fD(p.inicioPractica)}.`,`<button class="btn" onclick="go('asignacion')">Ver mi asignación</button>`],
+  'Supervisión y seguimiento':['Tu práctica está en curso. Tu docente supervisor registrará los seguimientos.',`<button class="btn" onclick="go('asignacion')">Ver mi asignación</button>`],
+  'Proceso al día':['Todas las etapas de tu proceso están al día.','']}[k]||['',''];
+ const dias=p.cierreSel?Math.ceil((new Date(p.cierreSel+'T23:59')-new Date())/864e5):null;
+ const aviso=!s&&selAbierta(p)&&S.config.notif.cierre!==false&&dias!=null&&dias<=S.config.diasAviso;
+ return `<div class="stack"><div class="hero"><div><h2>Hola, ${esc(e.nombres.split(' ')[0])}</h2><p class="muted">Práctica profesional · período ${esc(p.codigo)}</p></div></div>
+ ${aviso?`<div class="alert bad">${ic('alert')}<div class="t"><b>El período de selección está próximo a finalizar.</b> Cierra el ${fD(p.cierreSel)} (${dias} día${dias===1?'':'s'}).</div></div>`:''}
+ <div class="card now"><div><div class="k">Dónde estás ahora</div><h3>${esc(k)}</h3><p class="muted" style="margin:0">${info[0]}</p></div><div>${info[1]}</div></div>
+ <div class="card"><h3>Tu ruta de práctica</h3>${ruta(e)}</div>
+ <div class="grid2"><div class="card"><h3>Tu selección</h3>${s?`<dl class="dl"><div><dt>Escenario</dt><dd>${esc(nombreEsc(es))}</dd></div><div><dt>Área</dt><dd>${esc(es.area)}</dd></div><div><dt>Estado</dt><dd>${chipSol(s)}</dd></div><div><dt>Matrícula financiera</dt><dd>${chipMat(e.matricula)}</dd></div>${d&&ASIG.includes(s.estado)?`<div><dt>Docente supervisor</dt><dd>${esc(d.nombre)}</dd></div>`:''}</dl>`:'<p class="muted">Aún no has seleccionado un escenario.</p>'}</div>
+ <div class="card"><h3>Avisos recientes</h3>${misNotifs().slice(0,4).map(n=>`<div class="notif ${n.leida?'':'new'}" style="padding:9px 0;background:none"><div><div>${esc(n.texto)}</div><div class="d">${fDH(n.fecha)}</div></div></div>`).join('')||'<p class="muted">Sin avisos.</p>'}${misNotifs().length?`<button class="btn ghost sm" onclick="go('notifs')">Ver todas</button>`:''}</div></div></div>`}
+function bloqueoSel(e){const p=perDe(e);const s=solActiva(e.id);if(s&&!(s.estado==='confirmada'&&e.cambioHabilitado))return s.estado==='confirmada'?'Tu escenario de práctica está confirmado. Para cambiarlo, comunícate con la coordinación.':'Ya tienes una selección activa. Para elegir otro escenario, primero cancélala en Mis postulaciones.';if(s&&s.estado==='confirmada'&&e.cambioHabilitado)return 'La coordinación habilitó un cambio: cancela tu asignación actual en Mis postulaciones para elegir otro escenario.';if(!selAbierta(p)&&!e.cambioHabilitado)return `El período de selección no está abierto (${fD(p.aperturaSel)} al ${fD(p.cierreSel)}).`;return ''}
+function cardEsc(e,est,bloq){const l=libres(e),st=estadoEsc(e),lleno=st==='Completo',cerrado=st==='Cerrado',venc=vencida(e);const vac=e.tipo==='vacante';const puede=!bloq&&!lleno&&!cerrado&&!venc;
+ return `<article class="esc" style="--ac:${areaCol(e.area)}">${lleno?`<span class="stamp">${vac?'VACANTE ASIGNADA':'CUPO COMPLETO'}</span>`:''}<div><span class="small" style="color:${areaCol(e.area)};font-weight:700">${esc(e.area)}${vac?' · Vacante de práctica':''}</span><h3 style="margin-top:3px;padding-right:${lleno?'90px':'0'}">${esc(e.nombre)}</h3>${vac?`<div style="font-weight:600;margin-top:2px">${esc(e.cargo)}</div>`:''}</div>
+ <div class="meta"><span>${ic('pin')} ${esc(e.ciudad||'—')}${e.direccion?' · '+esc(e.direccion):''}</span><span>Jornada ${esc((e.jornada||'Diurna').toLowerCase())}${vac?' · '+esc(e.modalidad):''}</span>${vac&&e.fechaLimite?`<span>Postulación hasta el ${fD(e.fechaLimite)}${venc?' (vencida)':''}</span>`:''}</div>
+ <div class="row">${e.requiereEntrevista?chip('Requiere entrevista','warn'):chip('Sin entrevista','')} ${cerrado?chip('Cerrado',''):''}</div>
+ ${vac&&e.descripcion?`<p class="small" style="margin:0">${esc(e.descripcion)}</p>`:''}${vac&&e.perfil?`<p class="small" style="margin:0"><b>Perfil:</b> ${esc(e.perfil)}</p>`:''}${vac&&e.procesoSeleccion?`<p class="small" style="margin:0"><b>Proceso de selección:</b> ${esc(e.procesoSeleccion)}</p>`:''}
+ ${e.requisitos?`<div class="req"><b>Requisitos:</b> ${esc(e.requisitos)}</div>`:''}${e.observaciones?`<p class="small muted" style="margin:0">${esc(e.observaciones)}</p>`:''}
+ <div class="foot"><div style="flex:1"><div class="occ">${barra(ocupados(e.id),+e.cupos)}</div><span class="small muted">${lleno?'Sin cupos disponibles':`${l} ${vac?'vacante':'cupo'}${l===1?'':'s'} disponible${l===1?'':'s'} de ${e.cupos}`}</span></div><button class="btn ${puede?'pri':''}" ${puede?'':'disabled'} onclick="confSel('${e.id}')">${vac?'Postularme':'Seleccionar'}</button></div></article>`}
+function vEstEsc(tipo){const e=yo();const k='se_'+tipo;F[k]=F[k]||{area:'',ciudad:'',ent:'',disp:''};const f=F[k];const all=S.escenarios.filter(x=>x.periodoId===e.periodoId&&x.tipo===tipo);const ciudades=[...new Set(all.map(x=>x.ciudad).filter(Boolean))].sort();
+ const l=all.filter(x=>(!f.area||x.area===f.area)&&(!f.ciudad||x.ciudad===f.ciudad)&&(!f.ent||(f.ent==='si')===!!x.requiereEntrevista)&&(!f.disp||(libres(x)>0&&!x.cerrado))).sort((a,b)=>(estadoEsc(a)==='Completo')-(estadoEsc(b)==='Completo')||a.area.localeCompare(b.area)||a.nombre.localeCompare(b.nombre));
+ const bloq=bloqueoSel(e);const sel=(c,arr,t)=>`<select onchange="F['${k}'].${c}=this.value;render()" aria-label="${t}">${opts(arr,t).map(o=>{const [v,tx]=Array.isArray(o)?o:[o,o];return `<option value="${esc(v)}" ${f[c]===v?'selected':''}>${esc(tx)}</option>`}).join('')}</select>`;
+ return `<div class="stack">${tipo==='escenario'?'<h2 style="font-size:26px">Elige tu escenario de práctica</h2>':'<div><h2 style="font-size:26px">Vacantes y oportunidades del área organizacional</h2><p class="muted" style="margin:6px 0 0">Las empresas publican su cargo de práctica, perfil y proceso de selección.</p></div>'}${bloq?`<div class="alert info">${ic('info')}<div class="t">${esc(bloq)}</div></div>`:''}
+ <div class="filters" style="margin:0">${tipo==='escenario'?sel('area',S.config.areas,'Todas las áreas'):''}${sel('ciudad',ciudades,'Todas las ciudades')}${sel('ent',[['si','Con entrevista'],['no','Sin entrevista']],'Entrevista')}${sel('disp',[['1','Solo con cupos']],'Disponibilidad')}</div>
+ ${l.length?`<div class="escs">${l.map(x=>cardEsc(x,e,bloq)).join('')}</div>`:`<div class="card empty"><b>No hay ${tipo==='vacante'?'vacantes':'escenarios'} con estos filtros</b>Prueba con otros filtros.</div>`}</div>`}
+function confSel(id){const es=ESC(id);const vac=es.tipo==='vacante';
+ modal(vac?'Confirmar postulación':'Confirmar selección',`<div class="stack"><p>Vas a ${vac?'postularte a':'seleccionar'} <b>${esc(nombreEsc(es))}</b> (${esc(es.area)}, ${esc(es.ciudad||'')}).</p>${es.requiereEntrevista?`<div class="alert warn">${ic('alert')}<div class="t"><b>Este escenario requiere proceso de entrevista. La selección del escenario no garantiza la asignación.</b>${es.fechasEntrevista?'<br>Fechas: '+esc(es.fechasEntrevista):''}${es.modalidadEntrevista?' · Modalidad: '+esc(es.modalidadEntrevista):''}</div></div>`:`<div class="alert info">${ic('info')}<div class="t">Tu selección quedará pendiente de validación por la coordinación. La asignación se confirma cuando tengas matrícula financiera vigente.</div></div>`}<p class="small muted">Solo puedes tener una selección activa a la vez.</p></div>`,{foot:`<button class="btn ghost" onclick="cerrarModal()">Cancelar</button><button class="btn pri" onclick="seleccionarEst('${id}')">${vac?'Confirmar postulación':'Confirmar selección'}</button>`})}
+function seleccionarEst(escId){act(()=>{const est=yo(),es=ESC(escId);const p=perDe(est);if(!selAbierta(p)&&!est.cambioHabilitado)throw new Error('El período de selección no está abierto.');if(vencida(es))throw new Error('La fecha límite de postulación ya pasó.');const s=crearSolicitud(est,es,es.tipo==='vacante'?'Postulación realizada por el estudiante':'Selección realizada por el estudiante');est.cambioHabilitado=false;
+ notificar('seleccion','est:'+est.id,`Tu selección de escenario fue registrada: ${nombreEsc(es)}.`);if(es.requiereEntrevista)notificar('entrevista','est:'+est.id,'Este escenario requiere entrevista. La selección del escenario no garantiza la asignación.');
+ log(es.tipo==='vacante'?'Postulación a vacante':'Selección de escenario',desc(s));cerrarModal();toast('Tu selección fue registrada');view='postulaciones'})}
+function vPostulaciones(){const e=yo();const l=S.solicitudes.filter(s=>s.estudianteId===e.id).sort((a,b)=>b.fecha.localeCompare(a.fecha));
+ if(!l.length)return `<div class="card empty"><b>Aún no tienes postulaciones</b>Elige un escenario o una vacante para empezar.<div style="margin-top:12px"><button class="btn pri" onclick="go('escenarios')">Ver escenarios</button></div></div>`;
+ return `<div class="stack">${l.map(s=>{const es=ESC(s.escenarioId),en=s.entrevista;const puede=['pendiente_validacion','pendiente_entrevista','asignacion_provisional'].includes(s.estado)||(s.estado==='confirmada'&&e.cambioHabilitado);return `<div class="card"><div class="row" style="align-items:flex-start"><div style="flex:1;min-width:220px"><span class="small" style="color:${areaCol(es.area)};font-weight:700">${esc(es.area)}${es.tipo==='vacante'?' · Vacante':''}</span><h3 style="margin:2px 0 4px">${esc(nombreEsc(es))}</h3><p class="small muted" style="margin:0">Registrada el ${fDH(s.fecha)}</p></div>${chipSol(s)}</div>
+ ${en?`<div class="alert ${en.estado==='Aprobado'?'ok':en.estado==='No aprobado'?'bad':'warn'}" style="margin-top:12px">${ic('chat')}<div class="t"><b>Entrevista: ${esc(en.estado)}</b>${en.fecha?' · '+fDH(en.fecha):' · Fecha por confirmar'}${es.modalidadEntrevista?' · '+esc(es.modalidadEntrevista):''}${en.observaciones&&en.estado!=='Pendiente'?'<br>'+esc(en.observaciones):''}</div></div>`:''}
+ <ul class="tl" style="margin-top:14px">${(s.historial||[]).map(h=>`<li><div class="d">${fDH(h.fecha)}</div><div class="tx">${esc(h.texto)}</div></li>`).join('')}</ul>${puede?`<button class="btn danger sm" onclick="confirmar('Cancelar selección','<p>Se liberará tu cupo en ${esc(esc(es.nombre))}. Podrás elegir otro escenario mientras el período de selección esté abierto.</p>',()=>cancelarEst('${s.id}'),'Cancelar selección',true)">Cancelar selección</button>`:''}</div>`}).join('')}</div>`}
+function cancelarEst(id){act(()=>{const s=SOL(id),e=yo();if(s.estudianteId!==e.id)throw new Error('No autorizado.');if(s.estado==='confirmada'&&!e.cambioHabilitado)throw new Error('Tu asignación está confirmada. Solo la coordinación puede habilitar un cambio.');s.estado='anulada';s.fechaConfirmacion=null;hist(s,'Cancelada por el estudiante');log('Cancelación de selección',desc(s));toast('Selección cancelada')})}
+function vMiAsig(){const e=yo(),s=solActiva(e.id);if(!s||!ASIG.includes(s.estado))return `<div class="card empty"><b>Aún no tienes una asignación</b>${s?'Tu selección está en trámite: '+esc(textoSol(s))+'.':'Elige un escenario para iniciar tu proceso.'}</div>`;const es=ESC(s.escenarioId),d=docenteDe(s),p=perDe(e);
+ return `<div class="stack">${s.estado==='confirmada'?`<div class="alert ok">${ic('check')}<div class="t"><b>Escenario de práctica confirmado</b> el ${fDL(s.fechaConfirmacion)}.</div></div>`:`<div class="alert warn">${ic('alert')}<div class="t"><b>Asignación provisional.</b> Tu escenario quedará confirmado cuando tu matrícula financiera esté vigente.</div></div>`}
+ <div class="grid2"><div class="card"><h3>${esc(nombreEsc(es))}</h3><dl class="dl">${[['Área',es.area],['Ciudad',es.ciudad],['Dirección',es.direccion],['Jornada',es.jornada],['Contacto',es.contacto],['Teléfono',es.telefono],['Correo',es.email],['Inicio de práctica',fD(p.inicioPractica)],['Fin del período',fD(p.fin)]].filter(x=>x[1]).map(([k,v])=>`<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></div>
+ <div class="card"><h3>Docente supervisor</h3>${d?`<dl class="dl"><div><dt>Nombre</dt><dd>${esc(d.nombre)}</dd></div><div><dt>Correo</dt><dd>${esc(d.email||'—')}</dd></div><div><dt>Teléfono</dt><dd>${esc(d.telefono||'—')}</dd></div></dl>`:'<p class="muted">La coordinación asignará tu docente supervisor.</p>'}</div></div></div>`}
+function vMiMat(){const e=yo(),s=solActiva(e.id),p=perDe(e);return `<div class="card" style="max-width:720px"><div class="row"><h3 style="margin:0;flex:1">Matrícula financiera ${esc(p.codigo)}</h3>${chipMat(e.matricula)}</div><p style="margin-top:14px">${e.matricula==='matriculado'?'Tu matrícula financiera está vigente.':'La matrícula financiera vigente es requisito para que tu escenario de práctica quede confirmado.'}</p>${s&&s.estado==='asignacion_provisional'&&e.matricula!=='matriculado'?`<div class="alert warn">${ic('alert')}<div class="t">Tu escenario ya fue aprobado y está esperando tu matrícula financiera.</div></div>`:''}<p class="small muted" style="margin-top:12px">Fechas de matrícula: ${fD(p.matriculaIni)} al ${fD(p.matriculaFin)}. ${e.matriculaFecha?'Última actualización: '+fDL(e.matriculaFecha)+'.':''}</p></div>`}
+function vMiCarta(){const e=yo(),s=solActiva(e.id);const cartas=S.cartas.filter(c=>c.estudianteId===e.id);const org=s&&esCarta(s);
+ if(!org&&!cartas.length)return `<div class="card empty"><b>La Carta Aval aplica a prácticas del área ${esc(S.config.cartaAreas.join(', '))}</b>${s?'Tu escenario actual no requiere Carta Aval.':'Cuando tengas un escenario confirmado en esta área, podrás descargarla aquí.'}</div>`;
+ const cond=[['Escenario del área organizacional',!!org],['Selección aprobada (y entrevista, si aplica)',!!(s&&ASIG.includes(s.estado))],['Matrícula financiera vigente',e.matricula==='matriculado'],['Escenario confirmado',!!(s&&s.estado==='confirmada')]];
+ return `<div class="grid2"><div class="card stack"><h3>Carta Aval</h3>${elegibleCarta(s)?`<div class="alert ok">${ic('check')}<div class="t"><b>Tu Carta Aval está disponible.</b></div></div><button class="btn pri" onclick="generarCarta('${s.id}')">${ic('down')} ${cartas.some(c=>c.solicitudId===s.id)?'Generar y descargar de nuevo':'Generar y descargar'}</button>`:`<p class="muted">Se habilita cuando se cumplan estas condiciones:</p><ul style="list-style:none;padding:0;margin:0">${cond.map(([t,ok])=>`<li style="display:flex;gap:8px;padding:5px 0;color:${ok?'var(--ok)':'var(--muted)'}">${ok?ic('tick'):ic('x')} ${t}</li>`).join('')}</ul>`}</div>
+ <div class="card"><h3>Cartas generadas</h3>${cartas.length?cartas.map(c=>`<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line)"><div style="flex:1"><b>${esc(c.codigo)}</b><div class="small muted">${fDH(c.fecha)}</div></div><button class="btn sm" onclick="descargarCarta('${c.id}')">PDF</button></div>`).join(''):'<p class="muted">Aún no has generado tu carta.</p>'}</div></div>`}
+function vNotifs(){const l=misNotifs();const html=l.length?`<div class="card" style="padding:0">${l.map(n=>`<div class="notif ${n.leida?'':'new'}">${ic('bell')}<div><div>${esc(n.texto)}</div><div class="d">${fDH(n.fecha)}</div></div></div>`).join('')}</div>`:'<div class="card empty"><b>No tienes notificaciones</b></div>';if(l.some(n=>!n.leida)){l.forEach(n=>n.leida=true);guardar();setTimeout(()=>{document.querySelectorAll('.nav .badge, .dotn').forEach(b=>b.remove())},1500)}return html}
+
+/* ================= DOCENTE ================= */
+function vDocInicio(){const d=D(sess.id),l=solsDocente(d.id);const gs=S.seguimientos.filter(g=>l.some(s=>s.id===g.solicitudId));const sin=l.filter(s=>!segsDe(s.id).length).length;const alert=l.filter(s=>{const g=segsDe(s.id);const u=g[g.length-1];return u&&(u.estadoProceso.includes('alerta')||u.estadoProceso==='Suspendido')}).length;
+ return `<div class="stack"><div class="hero"><div><h2>Hola, ${esc(d.nombre.split(' ')[0])}</h2><p class="muted">Período ${esc(per().codigo)}</p></div><button class="btn pri" onclick="go('supervision')">Registrar seguimiento</button></div><div class="kpis">${kpi(l.length,'Estudiantes asignados','info','misest')}${kpi(l.filter(s=>s.estado==='confirmada').length,'Confirmados','ok')}${kpi(sin,'Sin seguimiento aún','warn','supervision')}${kpi(alert,'Procesos con alertas','bad','supervision')}${kpi(gs.length,'Seguimientos registrados','', 'seguimientos')}</div><div class="grid2">${vCalendario(per())}<div class="card"><h3>Últimos seguimientos</h3>${gs.sort((a,b)=>b.creado.localeCompare(a.creado)).slice(0,6).map(g=>`<div style="padding:8px 0;border-bottom:1px solid var(--line)"><b>${esc(nombreCompleto(E(g.estudianteId)))}</b> <span class="small muted">· ${fD(g.fecha)} · ${esc(g.tipo)}</span><div class="small">${esc((g.descripcion||g.actividades||'').slice(0,120))}</div></div>`).join('')||'<p class="muted">Aún no hay seguimientos.</p>'}</div></div></div>`}
+function vMisEst(){const l=solsDocente(sess.id);if(!l.length)return `<div class="card empty"><b>No tienes estudiantes asignados en ${esc(per().codigo)}</b>Cambia el período en la parte superior para ver períodos anteriores.</div>`;
+ return `<p class="count">${l.length} estudiantes</p><div class="tbl"><table><thead><tr><th>Estudiante</th><th>Documento</th><th>Escenario</th><th>Área</th><th>Período</th><th>Estado</th><th>Contacto</th><th>Seguimiento</th><th></th></tr></thead><tbody>${l.map(s=>{const e=E(s.estudianteId),es=ESC(s.escenarioId),g=segsDe(s.id);return `<tr><td><b>${esc(nombreCompleto(e))}</b></td><td>${esc(e.documento)}</td><td>${esc(nombreEsc(es))}</td><td>${esc(es.area)}</td><td>${esc(per().codigo)}</td><td>${chipSol(s)}</td><td class="small">${esc(e.email||'')}<span class="sub">${esc(e.telefono||'')}</span></td><td class="small">${g.length} · ${g.length?'último '+fD(g[g.length-1].fecha):'sin registros'}</td><td><button class="btn sm" onclick="supSel='${s.id}';go('supervision')">Ficha</button></td></tr>`}).join('')}</tbody></table></div>`}
+function vSegs(){const l=solsDocente(sess.id);const gs=S.seguimientos.filter(g=>l.some(s=>s.id===g.solicitudId)).sort((a,b)=>(b.fecha+b.creado).localeCompare(a.fecha+a.creado));return gs.length?`<div class="card"><ul class="tl">${gs.map(g=>`<li><div class="d">${fD(g.fecha)} · ${esc(g.tipo)}</div><div class="ty">${esc(nombreCompleto(E(g.estudianteId)))}</div>${g.descripcion?`<div class="tx">${esc(g.descripcion)}</div>`:''}${g.compromisos?`<div class="tx"><b>Compromisos:</b> ${esc(g.compromisos)}</div>`:''}<div class="mt">${esc(g.estadoProceso)}</div></li>`).join('')}</ul></div>`:'<div class="card empty"><b>Aún no hay seguimientos en este período</b>Regístralos desde Supervisión.</div>'}
+function vDocRep(){const n=solsDocente(sess.id).length;return `<div class="grid2"><div class="card stack"><h3>Mis estudiantes</h3><p class="muted small">${n} estudiantes del período ${esc(per().codigo)} con estado y resumen de seguimiento.</p><div class="row"><button class="btn pri" onclick="run(()=>reporte3('pdf','${sess.id}'))">${ic('down')} PDF</button><button class="btn" onclick="run(()=>reporte3('xlsx','${sess.id}'))">${ic('down')} Excel</button></div></div><div class="card stack"><h3>Fichas de seguimiento</h3><p class="muted small">Abre la ficha de cada estudiante en Supervisión y descarga su línea de tiempo en PDF.</p><button class="btn" onclick="go('supervision')">Ir a Supervisión</button></div></div>`}
+
+/* ================= RUTAS ================= */
+const VIEWS={
+ admin:{dashboard:vDashboard,periodos:vPeriodos,estudiantes:vEstudiantes,escenarios:()=>vEscAdmin('escenario'),vacantes:()=>vEscAdmin('vacante'),entrevistas:vEntrevistas,asignaciones:vAsignaciones,matricula:vMatricula,docentes:vDocentes,supervision:vSupervision,cartas:vCartas,reportes:vReportes,config:vConfig},
+ est:{inicio:vEstInicio,escenarios:()=>vEstEsc('escenario'),postulaciones:vPostulaciones,asignacion:vMiAsig,matricula:vMiMat,vacantes:()=>vEstEsc('vacante'),carta:vMiCarta,calendario:()=>vCalendario(),notifs:vNotifs},
+ doc:{inicio:vDocInicio,misest:vMisEst,supervision:vSupervision,seguimientos:vSegs,calendario:()=>vCalendario(),reportes:vDocRep},
+ prog:{programa:vPrograma,calendario:()=>vCalendario()}
+};
+cargar();
+try{const r=localStorage.getItem(SKEY);if(r)sess=JSON.parse(r)}catch(e){}
+sincronizar();render();getDl();
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#modal').classList.contains('open'))cerrarModal()});
+</script>
+</body>
+</html>
